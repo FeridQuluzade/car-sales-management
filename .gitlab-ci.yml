@@ -1,0 +1,11 @@
+stages:
+  - build/test
+
+build project:
+  stage: build/test
+  image: maven:latest
+  script:
+    - mvn package
+  artifacts:
+    paths:
+      - target
