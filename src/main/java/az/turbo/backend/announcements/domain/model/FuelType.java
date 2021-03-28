@@ -1,9 +1,8 @@
 package az.turbo.backend.announcements.domain.model;
 
 public enum FuelType {
-    PETROL,
+    GASOLINE,
     DIESEL,
-    LPG,
-    CNG,
-    BIO_DIESEL
+    HYBRID,
+    ELECTRO
 }
