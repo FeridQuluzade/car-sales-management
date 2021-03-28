@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>az.turbo</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>turboaz-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>turboaz-backend</name>
     <description>Turbo.az REST API</description>

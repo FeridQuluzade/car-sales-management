@@ -25,7 +25,7 @@ public class Announcement extends BaseEntity {
 
     private FuelType fuelType;
     private TransmissionType transmissionType;
-    private GearBoxType gearBoxType;
+    private DriveType driveType;
 
     private int ride;
     private double price;
