@@ -1,30 +1,13 @@
-package az.turbo.backend.users.domain.model;
+package az.turbo.backend.users.application.dto;
 
-import az.turbo.backend.shared.BaseEntity;
+import az.turbo.backend.users.domain.model.Gender;
 
-public class User extends BaseEntity {
+public class UserDto {
     private long id;
     private String firstName;
     private String lastName;
     private Gender gender;
     private String email;
-    private String password;
-
-    public User() {}
-
-    public User(long id,
-                String firstName,
-                String lastName,
-                Gender gender,
-                String email,
-                String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.email = email;
-        this.password = password;
-    }
 
     public long getId() {
         return id;
@@ -66,13 +49,12 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public String toString() {
+        return "Id = " + id +
+                " First name = " + firstName +
+                " Last name = " + lastName +
+                " Gender = " + gender +
+                " Email = " + email;
     }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
 }

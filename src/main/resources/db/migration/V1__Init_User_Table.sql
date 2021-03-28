@@ -1,0 +1,20 @@
+create table users (
+    id bigserial not null ,
+    first_name varchar(20) not null ,
+    last_name varchar(20) not null ,
+    gender int2 not null ,
+    email varchar(100) not null ,
+    password varchar(255) not null ,
+    created_by int8 null,
+    created_date timestamp not null default CURRENT_TIMESTAMP,
+    updated_by int8 null,
+    updated_date timestamp null,
+    deleted_by int8 null,
+    deleted_date timestamp null ,
+    is_deleted bit not null default bit'0',
+    constraint pk_users primary key (id),
+    constraint uk_users_email unique (email),
+    constraint fk_users_created_by foreign key(created_by) references users(id),
+    constraint fk_users_updated_by foreign key(updated_by) references users(id),
+    constraint fk_users_deleted_by foreign key(deleted_by) references users(id)
+);
