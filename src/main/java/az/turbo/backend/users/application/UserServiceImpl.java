@@ -2,6 +2,7 @@ package az.turbo.backend.users.application;
 
 import az.turbo.backend.users.application.dto.UserCreateDto;
 import az.turbo.backend.users.application.dto.UserDto;
+import az.turbo.backend.users.application.dto.UserUpdateDto;
 import az.turbo.backend.users.domain.UserRepository;
 import az.turbo.backend.users.domain.model.User;
 import org.modelmapper.ModelMapper;
@@ -44,5 +45,21 @@ public class UserServiceImpl implements UserService {
     public long create(UserCreateDto userCreateDto) {
         User user = modelMapper.map(userCreateDto, User.class);
         return userRepository.create(user);
+    }
+
+    @Override
+    public long update(UserUpdateDto userUpdateDto) {
+        User userNEW = modelMapper.map(userUpdateDto, User.class);
+        return userRepository.update(userNEW);
+    }
+
+    @Override
+    public List<UserDto> findByEmail(String email) {
+        return userRepository
+                .findAll()
+                .stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .filter(x->x.getEmail().equals(email))
+                .collect(Collectors.toList());
     }
 }
