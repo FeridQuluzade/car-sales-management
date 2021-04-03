@@ -51,11 +51,10 @@ public class TurboazBackendApplication {
 
         UserUpdateDto userUpdateDto = new UserUpdateDto();
         userUpdateDto.setId(5);
-        userUpdateDto.setFirstName("Yalchin");
+        userUpdateDto.setFirstName("Yalcin");
         userUpdateDto.setLastName("Kazimov");
         userUpdateDto.setGender(Gender.MALE);
         userUpdateDto.setEmail("yalcin.kazimov@gmail.com");
-        userUpdateDto.setPassword("dsfsasasdfs");
         userUpdateDto.setUpdatedBy(2);
         userUpdateDto.setUpdatedDate(LocalDateTime.now());
 
@@ -70,7 +69,7 @@ public class TurboazBackendApplication {
 
         System.out.println("---------------------------------------------");
 
-        List<UserDto> userFind=userService.findByEmail("yunus.kazimov3@gmail.com");
+        List<UserDto> userFind=userService.retrieveByEmail("yunus.kazimov3@gmail.com");
         for (UserDto user : userFind) {
             System.out.println(user);
         }

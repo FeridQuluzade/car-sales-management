@@ -9,7 +9,7 @@ public class UserUpdateDto extends AuditUpdateDto {
     private String lastName;
     private Gender gender;
     private String email;
-    private String password;
+
 
     public String getFirstName() {
         return firstName;
@@ -51,11 +51,4 @@ public class UserUpdateDto extends AuditUpdateDto {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

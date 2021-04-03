@@ -13,7 +13,7 @@ public interface UserService {
 
     long update(UserUpdateDto UserUpdateDto);
 
-    List<UserDto> findByEmail(String email);
+    List<UserDto> retrieveByEmail(String email);
 
 
 }

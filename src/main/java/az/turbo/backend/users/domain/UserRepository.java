@@ -95,17 +95,17 @@ public class UserRepository {
             Class.forName(DRIVER_NAME);
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
             String query = "update users SET " +
-                    "first_name=?, last_name=?, gender=?, email=?, password=?, updated_by=?, updated_date=?" +
+                    "first_name=?, last_name=?, gender=?, email=?, updated_by=?, updated_date=?" +
                     " where id=?";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setLong(8, newUser.getId());
+            ps.setLong(7, newUser.getId());
             ps.setString(1, newUser.getFirstName());
             ps.setString(2, newUser.getLastName());
             ps.setInt(3, newUser.getGender().ordinal());
             ps.setString(4, newUser.getEmail());
-            ps.setString(5, newUser.getPassword());
-            ps.setLong(6, newUser.getUpdatedBy());
-            ps.setTimestamp(7, Timestamp.valueOf(newUser.getUpdatedDate()));
+          //  ps.setString(5, newUser.getPassword());
+            ps.setLong(5, newUser.getUpdatedBy());
+            ps.setTimestamp(6, Timestamp.valueOf(newUser.getUpdatedDate()));
 
             ps.executeUpdate();
 

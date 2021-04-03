@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findByEmail(String email) {
+    public List<UserDto> retrieveByEmail(String email) {
         return userRepository
                 .findAll()
                 .stream()
