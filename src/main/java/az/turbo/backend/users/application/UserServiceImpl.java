@@ -7,7 +7,9 @@ import az.turbo.backend.users.domain.UserRepository;
 import az.turbo.backend.users.domain.model.User;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
@@ -44,5 +46,15 @@ public class UserServiceImpl implements UserService {
     public void update(UserUpdateDto userUpdateDto) {
         User user = modelMapper.map(userUpdateDto, User.class);
         userRepository.update(user);
+    }
+
+    @Override
+    public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
+        userRepository.deleteById(id, deletedBy, deletedDate);
+    }
+
+    @Override
+    public void deleteAll(Set<Long> ids, long deletedBy, LocalDateTime deletedDate) {
+        userRepository.deleteAll(ids, deletedBy, deletedDate);
     }
 }
