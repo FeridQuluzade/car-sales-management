@@ -4,10 +4,8 @@ import az.turbo.backend.users.domain.model.Gender;
 import az.turbo.backend.users.domain.model.User;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 public class UserRepository {
     private final String URL = "jdbc:postgresql://localhost/turboaz";
@@ -54,6 +52,46 @@ public class UserRepository {
         }
     }
 
+    public User findByEmail(String filterEmail) {
+        try {
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            String query = "select * from users WHERE email=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, filterEmail);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            long id = resultSet.getLong("id");
+            String firstName = resultSet.getString("first_name");
+            String lastName = resultSet.getString("last_name");
+            int gender = resultSet.getInt("gender");
+            String email = resultSet.getString("email");
+            String hashPassword = resultSet.getString("password");
+
+            User user = new User(id,
+                    firstName,
+                    lastName,
+                    gender == 0 ? Gender.MALE : Gender.FEMALE,
+                    email,
+                    hashPassword);
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            return user;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public long create(User user) {
         try {
             Class.forName(DRIVER_NAME);
@@ -90,73 +128,34 @@ public class UserRepository {
         }
     }
 
-    public long update(User newUser) {
+    public void update(User user) {
         try {
             Class.forName(DRIVER_NAME);
+
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            String query = "update users SET " +
-                    "first_name=?, last_name=?, gender=?, email=?, updated_by=?, updated_date=?" +
-                    " where id=?";
+
+            String query = "update users " +
+                    "SET first_name=?, last_name=?, gender=?, email=?, updated_by=?, updated_date=? " +
+                    "where id=?";
+
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setLong(7, newUser.getId());
-            ps.setString(1, newUser.getFirstName());
-            ps.setString(2, newUser.getLastName());
-            ps.setInt(3, newUser.getGender().ordinal());
-            ps.setString(4, newUser.getEmail());
-          //  ps.setString(5, newUser.getPassword());
-            ps.setLong(5, newUser.getUpdatedBy());
-            ps.setTimestamp(6, Timestamp.valueOf(newUser.getUpdatedDate()));
+
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setInt(3, user.getGender().ordinal());
+            ps.setString(4, user.getEmail());
+            ps.setLong(5, user.getUpdatedBy());
+            ps.setTimestamp(6, Timestamp.valueOf(user.getUpdatedDate()));
+            ps.setLong(7, user.getId());
 
             ps.executeUpdate();
 
             ps.close();
             connection.close();
-            // resultSet no id qaytardi. Ona gore bele edirem.
-            return newUser.getId();
 
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (SQLException throwables) {
-            throw new RuntimeException(throwables.getMessage());
-        }
-    }
-
-    public List<User> findByWhere(String sqlCol, String searchedElement) {
-        try {
-            List<User> users = new ArrayList<>();
-
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            String query = "select * from users WHERE "+sqlCol+"='"+searchedElement+"';";
-
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-
-                long id = resultSet.getLong("id");
-                String firstName = resultSet.getString("first_name");
-                String lastName = resultSet.getString("last_name");
-                int gender = resultSet.getInt("gender");
-                String email = resultSet.getString("email");
-                String hashPassword = resultSet.getString("password");
-
-                users.add(new User(id,
-                        firstName,
-                        lastName,
-                        gender == 0 ? Gender.MALE : Gender.FEMALE,
-                        email,
-                        hashPassword));
-            }
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-
-            return users;
-
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage());
         }
     }

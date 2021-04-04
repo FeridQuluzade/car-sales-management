@@ -21,24 +21,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> retrieveAll() {
-//        return userRepository
-//                .findAll()
-//                .stream()
-//                .map(user -> {
-//                    UserDto userDto = new UserDto();
-//                    userDto.setId(user.getId());
-//                    userDto.setFirstName(user.getFirstName());
-//                    userDto.setLastName(user.getLastName());
-//                    userDto.setGender(user.getGender());
-//                    userDto.setEmail(user.getEmail());
-//                    return userDto;
-//                })
-//                .collect(Collectors.toList());
         return userRepository
                 .findAll()
                 .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto retrieveByEmail(String email) {
+        User user =  userRepository.findByEmail(email);
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
@@ -48,17 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long update(UserUpdateDto userUpdateDto) {
+    public void update(UserUpdateDto userUpdateDto) {
         User user = modelMapper.map(userUpdateDto, User.class);
-        return userRepository.update(user);
-    }
-
-    @Override
-    public List<UserDto> retrieveByEmail(String email) {
-        return userRepository
-                .findByWhere("email",email)
-                .stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
-                .collect(Collectors.toList());
+        userRepository.update(user);
     }
 }

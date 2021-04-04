@@ -9,11 +9,13 @@ import java.util.List;
 public interface UserService {
     List<UserDto> retrieveAll();
 
+    UserDto retrieveByEmail(String email);
+
     long create(UserCreateDto userCreateDto);
 
-    long update(UserUpdateDto UserUpdateDto);
+    void update(UserUpdateDto UserUpdateDto);
 
-    List<UserDto> retrieveByEmail(String email);
+
 
 
 }
