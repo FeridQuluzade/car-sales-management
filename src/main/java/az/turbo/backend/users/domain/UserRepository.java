@@ -7,6 +7,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class UserRepository {
@@ -55,38 +56,86 @@ public class UserRepository {
         }
     }
 
-    public User findByEmail(String filterEmail) {
+    public Optional<User> findById(long id) {
         try {
+            Optional<User> optionalUser = Optional.empty();
+
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            String query = "select * from users WHERE id=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()) {
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                int gender = resultSet.getInt("gender");
+                String email = resultSet.getString("email");
+                String hashPassword = resultSet.getString("password");
+
+                User user = new User(id,
+                        firstName,
+                        lastName,
+                        gender == 0 ? Gender.MALE : Gender.FEMALE,
+                        email,
+                        hashPassword);
+
+                optionalUser = Optional.of(user);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            return optionalUser;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public Optional<User> findByEmail(String email) {
+        try {
+            Optional<User> optionalUser = Optional.empty();
+
             Class.forName(DRIVER_NAME);
 
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
             String query = "select * from users WHERE email=?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, filterEmail);
+            preparedStatement.setString(1, email);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
 
-            long id = resultSet.getLong("id");
-            String firstName = resultSet.getString("first_name");
-            String lastName = resultSet.getString("last_name");
-            int gender = resultSet.getInt("gender");
-            String email = resultSet.getString("email");
-            String hashPassword = resultSet.getString("password");
+            if(resultSet.next()) {
+                long id = resultSet.getLong("id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                int gender = resultSet.getInt("gender");
+                String hashPassword = resultSet.getString("password");
 
-            User user = new User(id,
-                    firstName,
-                    lastName,
-                    gender == 0 ? Gender.MALE : Gender.FEMALE,
-                    email,
-                    hashPassword);
+                User user = new User(id,
+                        firstName,
+                        lastName,
+                        gender == 0 ? Gender.MALE : Gender.FEMALE,
+                        email,
+                        hashPassword);
+
+                optionalUser = Optional.of(user);
+            }
 
             resultSet.close();
             preparedStatement.close();
             connection.close();
 
-            return user;
+            return optionalUser;
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
@@ -150,6 +199,33 @@ public class UserRepository {
             ps.setLong(5, user.getUpdatedBy());
             ps.setTimestamp(6, Timestamp.valueOf(user.getUpdatedDate()));
             ps.setLong(7, user.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            connection.close();
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void updatePassword(long id, String password) {
+        try {
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            String query = "update users " +
+                    "SET password=? " +
+                    "where id=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, password);
+            ps.setLong(2, id);
 
             ps.executeUpdate();
 
