@@ -47,18 +47,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.create(user);
     }
 
-    @Override
-    public long update(UserUpdateDto userUpdateDto) {
-        User user = modelMapper.map(userUpdateDto, User.class);
-        return userRepository.update(userNEW);
-    }
 
-    @Override
-    public List<UserDto> retrieveByEmail(String email) {
-        return userRepository
-                .findByWhere("email",email)
-                .stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
-                .collect(Collectors.toList());
-    }
 }
