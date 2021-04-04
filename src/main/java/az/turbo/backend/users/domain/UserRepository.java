@@ -121,5 +121,44 @@ public class UserRepository {
         }
     }
 
+    public List<User> findByWhere(String sqlCol, String searchedElement) {
+        try {
+            List<User> users = new ArrayList<>();
+
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            String query = "select * from users WHERE "+sqlCol+"='"+searchedElement+"';";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                long id = resultSet.getLong("id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                int gender = resultSet.getInt("gender");
+                String email = resultSet.getString("email");
+                String hashPassword = resultSet.getString("password");
+
+                users.add(new User(id,
+                        firstName,
+                        lastName,
+                        gender == 0 ? Gender.MALE : Gender.FEMALE,
+                        email,
+                        hashPassword));
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            return users;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
 }
