@@ -52,6 +52,46 @@ public class UserRepository {
         }
     }
 
+    public User findByEmail(String filterEmail) {
+        try {
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            String query = "select * from users WHERE email=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, filterEmail);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            long id = resultSet.getLong("id");
+            String firstName = resultSet.getString("first_name");
+            String lastName = resultSet.getString("last_name");
+            int gender = resultSet.getInt("gender");
+            String email = resultSet.getString("email");
+            String hashPassword = resultSet.getString("password");
+
+            User user = new User(id,
+                    firstName,
+                    lastName,
+                    gender == 0 ? Gender.MALE : Gender.FEMALE,
+                    email,
+                    hashPassword);
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            return user;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public long create(User user) {
         try {
             Class.forName(DRIVER_NAME);
@@ -87,4 +127,37 @@ public class UserRepository {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public void update(User user) {
+        try {
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            String query = "update users " +
+                    "SET first_name=?, last_name=?, gender=?, email=?, updated_by=?, updated_date=? " +
+                    "where id=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setInt(3, user.getGender().ordinal());
+            ps.setString(4, user.getEmail());
+            ps.setLong(5, user.getUpdatedBy());
+            ps.setTimestamp(6, Timestamp.valueOf(user.getUpdatedDate()));
+            ps.setLong(7, user.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            connection.close();
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 }

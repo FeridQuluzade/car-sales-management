@@ -2,6 +2,7 @@ package az.turbo.backend.users.application;
 
 import az.turbo.backend.users.application.dto.UserCreateDto;
 import az.turbo.backend.users.application.dto.UserDto;
+import az.turbo.backend.users.application.dto.UserUpdateDto;
 import az.turbo.backend.users.domain.UserRepository;
 import az.turbo.backend.users.domain.model.User;
 import org.modelmapper.ModelMapper;
@@ -20,19 +21,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> retrieveAll() {
-//        return userRepository
-//                .findAll()
-//                .stream()
-//                .map(user -> {
-//                    UserDto userDto = new UserDto();
-//                    userDto.setId(user.getId());
-//                    userDto.setFirstName(user.getFirstName());
-//                    userDto.setLastName(user.getLastName());
-//                    userDto.setGender(user.getGender());
-//                    userDto.setEmail(user.getEmail());
-//                    return userDto;
-//                })
-//                .collect(Collectors.toList());
         return userRepository
                 .findAll()
                 .stream()
@@ -41,8 +29,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto retrieveByEmail(String email) {
+        User user =  userRepository.findByEmail(email);
+        return modelMapper.map(user, UserDto.class);
+    }
+
+    @Override
     public long create(UserCreateDto userCreateDto) {
         User user = modelMapper.map(userCreateDto, User.class);
         return userRepository.create(user);
+    }
+
+    @Override
+    public void update(UserUpdateDto userUpdateDto) {
+        User user = modelMapper.map(userUpdateDto, User.class);
+        userRepository.update(user);
     }
 }
