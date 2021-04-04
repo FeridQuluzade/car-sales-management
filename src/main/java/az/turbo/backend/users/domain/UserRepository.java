@@ -4,8 +4,10 @@ import az.turbo.backend.users.domain.model.Gender;
 import az.turbo.backend.users.domain.model.User;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class UserRepository {
     private final String URL = "jdbc:postgresql://localhost/turboaz";
@@ -20,7 +22,8 @@ public class UserRepository {
             Class.forName(DRIVER_NAME);
 
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            String query = "select id, first_name, last_name, gender, email, password from users";
+            String query = "select id, first_name, last_name, gender, email, password from users " +
+                    "where is_deleted = bit'0'";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -160,4 +163,67 @@ public class UserRepository {
         }
     }
 
+    public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
+        try {
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            String query = "update users " +
+                    "SET is_deleted=cast(? as bit), deleted_by=?, deleted_date=? " +
+                    "where id=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, "1");
+            ps.setLong(2, deletedBy);
+            ps.setTimestamp(3, Timestamp.valueOf(deletedDate));
+            ps.setLong(4, id);
+
+            ps.executeUpdate();
+
+            ps.close();
+            connection.close();
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void deleteAll(Set<Long> ids, long deletedBy, LocalDateTime deletedDate) {
+        try {
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            connection.setAutoCommit(false);
+
+            String query = "update users " +
+                    "SET is_deleted=cast(? as bit), deleted_by=?, deleted_date=? " +
+                    "where id=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            for (long id : ids) {
+                ps.setString(1, "1");
+                ps.setLong(2, deletedBy);
+                ps.setTimestamp(3, Timestamp.valueOf(deletedDate));
+                ps.setLong(4, id);
+                ps.addBatch();
+            }
+
+            ps.executeBatch();
+
+            connection.commit();
+
+            ps.close();
+            connection.close();
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }
