@@ -1,5 +1,8 @@
 package az.turbo.backend;
 
+import az.turbo.backend.bodytypes.application.BodyTypeService;
+import az.turbo.backend.bodytypes.application.BodyTypeServiceImpl;
+import az.turbo.backend.bodytypes.application.dto.BodyCreateDto;
 import az.turbo.backend.users.application.UserService;
 import az.turbo.backend.users.application.UserServiceImpl;
 import az.turbo.backend.users.application.dto.UserCreateDto;
@@ -29,58 +32,11 @@ public class TurboazBackendApplication {
         //findByEmail - Yunus
         //bulkInsert - Jalal
         //bulkDelete - Ferid
-
-        UserService userService = new UserServiceImpl();
-
-        UserCreateDto userCreateDto = new UserCreateDto();
-        userCreateDto.setFirstName("Elcin");
-        userCreateDto.setLastName("Kazimov");
-        userCreateDto.setGender(Gender.MALE);
-        userCreateDto.setEmail("elcin.kazimov@gmail.com");
-        userCreateDto.setPassword("dhhffkjhsjkhfhskfhsf");
-        userCreateDto.setCreatedBy(2);
-        userCreateDto.setCreatedDate(LocalDateTime.now());
-
-//        long id = userService.create(userCreateDto);
-
-        UserCreateDto userCreateDto2 = new UserCreateDto();
-        userCreateDto2.setFirstName("Yalcin");
-        userCreateDto2.setLastName("Kazimov");
-        userCreateDto2.setGender(Gender.MALE);
-        userCreateDto2.setEmail("yalcin.kazimov3@gmail.com");
-        userCreateDto2.setPassword("dsfsdfs");
-        userCreateDto2.setCreatedBy(2);
-        userCreateDto2.setCreatedDate(LocalDateTime.now());
-
-        // System.out.println(userService.create(userCreateDto2));
-
-
-        UserUpdateDto userUpdateDto = new UserUpdateDto();
-        userUpdateDto.setId(5);
-        userUpdateDto.setFirstName("Yalcin");
-        userUpdateDto.setLastName("Kazimov");
-        userUpdateDto.setGender(Gender.MALE);
-        userUpdateDto.setEmail("yalcin.kazimov@gmail.com");
-        userUpdateDto.setUpdatedBy(2);
-        userUpdateDto.setUpdatedDate(LocalDateTime.now());
-
-        // System.out.println(userService.update(userUpdateDto));
-
-
-        List<UserDto> users = userService.retrieveAll();
-
-        for (UserDto user : users) {
-            System.out.println(user);
-        }
-
-        System.out.println("---------------------------------------------");
-
-//        UserDto userByEmail = userService.retrieveByEmail("yunus.kazimov3@gmail.com");
-//        System.out.println(userByEmail);
-
-        //userService.deleteById(3, 2, LocalDateTime.now());
-
-        Set<Long> ids = Arrays.asList(6L,8L,9L).stream().collect(Collectors.toSet());
-        userService.deleteAll(ids, 2, LocalDateTime.now());
+        BodyTypeService bodyTypeService= new BodyTypeServiceImpl();
+        BodyCreateDto bodyCreateDto= new BodyCreateDto();
+        bodyCreateDto.setName("SUV");
+        bodyCreateDto.setCreatedBy(22L);
+        bodyCreateDto.setCreatedDate(LocalDateTime.now());
+        System.out.println(bodyTypeService.create(bodyCreateDto));
     }
 }
