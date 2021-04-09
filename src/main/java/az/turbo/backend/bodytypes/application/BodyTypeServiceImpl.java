@@ -2,6 +2,7 @@ package az.turbo.backend.bodytypes.application;
 
 import az.turbo.backend.bodytypes.application.dto.BodyCreateDto;
 import az.turbo.backend.bodytypes.application.dto.BodyDto;
+import az.turbo.backend.bodytypes.application.exception.BodyNotFoundException;
 import az.turbo.backend.bodytypes.domain.BodyTypeRepository;
 import az.turbo.backend.bodytypes.domain.model.BodyType;
 
@@ -28,6 +29,14 @@ public class BodyTypeServiceImpl implements BodyTypeService {
                 .stream()
                 .map(bodyType -> modelMapper.map(bodyType,BodyDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BodyDto retrieveById(long id) throws BodyNotFoundException {
+        BodyType bodyType=bodyTypeRepository
+                .findById(id)
+                .orElseThrow(()->new BodyNotFoundException("BodyType not found! by Id"));
+        return modelMapper.map(bodyType,BodyDto.class);
     }
 
     @Override

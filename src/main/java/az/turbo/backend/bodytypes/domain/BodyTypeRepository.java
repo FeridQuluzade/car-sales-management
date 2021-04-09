@@ -46,6 +46,34 @@ public class BodyTypeRepository {
 
     }
 
+    public Optional<BodyType> findById(long id){
+        try{
+            Optional<BodyType>optionalBodyType=Optional.empty();
+
+            Class.forName(DRIVER_NAME);
+
+            Connection connection=DriverManager.getConnection(URL,USER,PASSWORD);
+            String query="select * from bodytype Where id=?";
+            PreparedStatement preparedStatement= connection.prepareStatement(query);
+            preparedStatement.setLong(1,id);
+
+            ResultSet resultSet=preparedStatement.executeQuery();
+            if (resultSet.next()){
+                String name=resultSet.getString("name");
+                BodyType bodyType= new BodyType(id,name);
+
+                optionalBodyType=Optional.of(bodyType);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+            return optionalBodyType;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
     public  long create(BodyType bodyType){
         try{
             Class.forName(DRIVER_NAME);
