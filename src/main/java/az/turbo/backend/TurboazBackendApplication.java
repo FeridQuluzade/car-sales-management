@@ -3,6 +3,8 @@ package az.turbo.backend;
 import az.turbo.backend.bodytypes.application.BodyTypeService;
 import az.turbo.backend.bodytypes.application.BodyTypeServiceImpl;
 import az.turbo.backend.bodytypes.application.dto.BodyCreateDto;
+import az.turbo.backend.bodytypes.application.dto.BodyTypeUpdateDto;
+import az.turbo.backend.bodytypes.application.exception.BodyNotFoundException;
 import az.turbo.backend.users.application.UserService;
 import az.turbo.backend.users.application.UserServiceImpl;
 import az.turbo.backend.users.application.dto.UserCreateDto;
@@ -32,8 +34,13 @@ public class TurboazBackendApplication {
         //findByEmail - Yunus
         //bulkInsert - Jalal
         //bulkDelete - Ferid
+        BodyTypeUpdateDto bodyTypeUpdateDto= new BodyTypeUpdateDto();
+        bodyTypeUpdateDto.setId(7L);
+        bodyTypeUpdateDto.setName("4*2*2");
+        bodyTypeUpdateDto.setUpdatedBy(7L);
+        bodyTypeUpdateDto.setUpdatedDate(LocalDateTime.now());
         BodyTypeService bodyTypeService= new BodyTypeServiceImpl();
-        System.out.println(bodyTypeService.retrieveAll());
+        bodyTypeService.update(bodyTypeUpdateDto);
 
     }
 }
