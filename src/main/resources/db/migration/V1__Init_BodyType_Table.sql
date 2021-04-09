@@ -1,4 +1,4 @@
-create table bodytype(
+create table bodytypes(
                          id bigserial not null ,
                          name varchar(20) not null ,
                          created_by int8 null,
