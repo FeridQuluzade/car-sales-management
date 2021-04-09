@@ -3,7 +3,7 @@ package az.turbo.backend.bodytypes.application;
 import az.turbo.backend.bodytypes.application.dto.BodyCreateDto;
 import az.turbo.backend.bodytypes.application.dto.BodyDto;
 import az.turbo.backend.bodytypes.application.dto.BodyUptadeDto;
-import az.turbo.backend.bodytypes.application.exception.BodyNotFoundException;
+
 import az.turbo.backend.bodytypes.domain.BodyTypeRepository;
 import az.turbo.backend.bodytypes.domain.model.BodyType;
 import org.modelmapper.ModelMapper;

@@ -23,7 +23,7 @@ public class BodyTypeRepository {
         try{
             Class.forName(DRIVER_NAME);
             Connection connection = DriverManager.getConnection(URL,USER,PASSWORD);
-            String  query="insert into bodytype(name,created_by,created_date)"+
+            String  query="insert into bodytypes(name,created_by,created_date)"+
                     "values(?,?,?) returning id";
                 PreparedStatement preparedStatement= connection.prepareStatement(query);
                 preparedStatement.setString(1,bodyType.getName());
