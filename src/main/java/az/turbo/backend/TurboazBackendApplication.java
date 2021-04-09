@@ -33,10 +33,7 @@ public class TurboazBackendApplication {
         //bulkInsert - Jalal
         //bulkDelete - Ferid
         BodyTypeService bodyTypeService= new BodyTypeServiceImpl();
-        BodyCreateDto bodyCreateDto= new BodyCreateDto();
-        bodyCreateDto.setName("SUV");
-        bodyCreateDto.setCreatedBy(22L);
-        bodyCreateDto.setCreatedDate(LocalDateTime.now());
-        System.out.println(bodyTypeService.create(bodyCreateDto));
+        System.out.println(bodyTypeService.retrieveAll());
+
     }
 }

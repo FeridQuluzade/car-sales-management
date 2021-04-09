@@ -19,6 +19,33 @@ public class BodyTypeRepository {
     private final String PASSWORD = "123456";
     private final String DRIVER_NAME = "org.postgresql.Driver";
 
+    public List<BodyType>findAll(){
+        try {
+        List<BodyType>bodyTypes= new ArrayList<>();
+        Class.forName(DRIVER_NAME);
+
+        Connection connection= DriverManager.getConnection(URL,USER,PASSWORD);
+        String query="select id,name from bodytype";
+        PreparedStatement preparedStatement= connection.prepareStatement(query);
+        ResultSet resultSet= preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            long id = resultSet.getLong("id");
+            String name=resultSet.getString("name");
+            bodyTypes.add(new BodyType(id,name));
+        }
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return bodyTypes;
+        }
+            catch (SQLException e) {
+                throw new RuntimeException(e.getMessage());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+
+    }
+
     public  long create(BodyType bodyType){
         try{
             Class.forName(DRIVER_NAME);
