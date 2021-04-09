@@ -1,5 +1,10 @@
 package az.turbo.backend;
 
+import az.turbo.backend.cities.application.CityServices;
+import az.turbo.backend.cities.application.CityServicesImpl;
+import az.turbo.backend.cities.application.dto.CityCreateDto;
+import az.turbo.backend.cities.application.dto.CityDto;
+import az.turbo.backend.cities.domain.model.City;
 import az.turbo.backend.users.application.UserService;
 import az.turbo.backend.users.application.UserServiceImpl;
 import az.turbo.backend.users.application.dto.UserCreateDto;
@@ -21,6 +26,41 @@ import java.util.stream.Collectors;
 public class TurboazBackendApplication {
 
     public static void main(String[] args) {
+//UserTestMain();
+
+        CityTestMain();
+
+    }
+
+    public static void CityTestMain() {
+        CityServices cityServices = new CityServicesImpl();
+
+        CityCreateDto city1 = new CityCreateDto();
+        city1.setName("SUV");
+        city1.setCreatedBy(4);
+        city1.setCreatedDate(LocalDateTime.now());
+
+        cityServices.create(city1);
+
+        CityCreateDto city2 = new CityCreateDto();
+        city2.setName("Sedan");
+        city2.setCreatedBy(2);
+        city2.setCreatedDate(LocalDateTime.now());
+
+        cityServices.create(city2);
+
+        cityServices.retrieveAll().stream().forEach(System.out::println);
+
+
+//List<CityDto> cities=cityServices.retrieveAll();
+//
+//        for (CityDto city : cities) {
+//            System.out.println(city);
+//        }
+
+    }
+
+    public static void UserTestMain() {
         //SpringApplication.run(TurboazBackendApplication.class, args);
 
         //update - Yunus
@@ -72,15 +112,15 @@ public class TurboazBackendApplication {
         for (UserDto user : users) {
             System.out.println(user);
         }
-
-        System.out.println("---------------------------------------------");
-
-//        UserDto userByEmail = userService.retrieveByEmail("yunus.kazimov3@gmail.com");
-//        System.out.println(userByEmail);
-
-        //userService.deleteById(3, 2, LocalDateTime.now());
-
-        Set<Long> ids = Arrays.asList(6L,8L,9L).stream().collect(Collectors.toSet());
+//
+//        System.out.println("---------------------------------------------");
+//
+////        UserDto userByEmail = userService.retrieveByEmail("yunus.kazimov3@gmail.com");
+////        System.out.println(userByEmail);
+//
+//        //userService.deleteById(3, 2, LocalDateTime.now());
+//
+        Set<Long> ids = Arrays.asList(6L, 8L, 9L).stream().collect(Collectors.toSet());
         userService.deleteAll(ids, 2, LocalDateTime.now());
     }
 }
