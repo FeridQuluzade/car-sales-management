@@ -34,13 +34,9 @@ public class TurboazBackendApplication {
         //findByEmail - Yunus
         //bulkInsert - Jalal
         //bulkDelete - Ferid
-        BodyTypeUpdateDto bodyTypeUpdateDto= new BodyTypeUpdateDto();
-        bodyTypeUpdateDto.setId(7L);
-        bodyTypeUpdateDto.setName("4*2*2");
-        bodyTypeUpdateDto.setUpdatedBy(7L);
-        bodyTypeUpdateDto.setUpdatedDate(LocalDateTime.now());
+
         BodyTypeService bodyTypeService= new BodyTypeServiceImpl();
-        bodyTypeService.update(bodyTypeUpdateDto);
+        bodyTypeService.deleteById(8L,22L,LocalDateTime.now());
 
     }
 }

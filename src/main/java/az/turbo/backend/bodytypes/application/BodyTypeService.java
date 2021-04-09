@@ -4,6 +4,7 @@ import az.turbo.backend.bodytypes.application.dto.BodyCreateDto;
 import az.turbo.backend.bodytypes.application.dto.BodyDto;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeUpdateDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BodyTypeService {
@@ -15,4 +16,5 @@ public interface BodyTypeService {
 
     void update(BodyTypeUpdateDto bodyTypeUpdateDto);
 
+    void deleteById(long id, long deletedBy, LocalDateTime deletedDate);
 }

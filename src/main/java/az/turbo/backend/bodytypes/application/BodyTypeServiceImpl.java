@@ -10,6 +10,7 @@ import az.turbo.backend.bodytypes.domain.model.BodyType;
 import org.modelmapper.ModelMapper;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -51,6 +52,11 @@ public class BodyTypeServiceImpl implements BodyTypeService {
     public void update(BodyTypeUpdateDto bodyTypeUpdateDto) {
         BodyType bodyType=modelMapper.map(bodyTypeUpdateDto,BodyType.class);
         bodyTypeRepository.update(bodyType);
+    }
+
+    @Override
+    public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
+        bodyTypeRepository.DeleteById(id,deletedBy,deletedDate);
     }
 
 }
