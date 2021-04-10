@@ -1,8 +1,11 @@
 package az.turbo.backend;
 
-import az.turbo.backend.bodytypes.application.BodyTypeService;
-import az.turbo.backend.bodytypes.application.BodyTypeServiceImpl;
+import az.turbo.backend.colors.application.ColorService;
+import az.turbo.backend.colors.application.ColorServiceImpl;
+import az.turbo.backend.colors.application.dto.ColorCreateDto;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class TurboazBackendApplication {
@@ -16,8 +19,12 @@ public class TurboazBackendApplication {
         //findByEmail - Yunus
         //bulkInsert - Jalal
         //bulkDelete - Ferid
-        BodyTypeService bodyTypeService= new BodyTypeServiceImpl();
-        System.out.println(bodyTypeService.retrieveAll());
 
+        ColorService colorService= new ColorServiceImpl();
+        ColorCreateDto colorCreateDto= new ColorCreateDto();
+        colorCreateDto.setName("Black");
+        colorCreateDto.setCreatedBy(22L);
+        colorCreateDto.setCreatedDate(LocalDateTime.now());
+        System.out.println(colorService.create(colorCreateDto));
     }
 }
