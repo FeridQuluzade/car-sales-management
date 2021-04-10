@@ -16,14 +16,6 @@ import az.turbo.backend.users.application.dto.UserUpdateDto;
 import az.turbo.backend.users.domain.model.Gender;
 import az.turbo.backend.users.domain.model.User;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.thymeleaf.expression.Sets;
-
-import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class TurboazBackendApplication {
