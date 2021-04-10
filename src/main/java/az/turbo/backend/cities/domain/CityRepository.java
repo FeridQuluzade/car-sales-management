@@ -5,6 +5,7 @@ import az.turbo.backend.cities.domain.model.City;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CityRepository {
     private final String URL = "jdbc:postgresql://localhost/turboaz";
@@ -40,24 +41,55 @@ public class CityRepository {
         }
     }
 
-    public long create(City city){
+    public Optional<City> findById(long id) {
+        try {
+            Optional<City> optionalCity = Optional.empty();
+
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            String query = "SELECT * FROM cities WHERE id=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, id);
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                City city = new City(id, name);
+                optionalCity = Optional.of(city);
+            }
+
+            resultSet.close();
+            ps.close();
+            connection.close();
+
+            return optionalCity;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public long create(City city) {
         try {
             Class.forName(DRIVER_NAME);
 
-            Connection connection = DriverManager.getConnection(URL,USER,PASSWORD);
-            String query ="INSERT INTO cities (name, created_by, created_date) " +
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            String query = "INSERT INTO cities (name, created_by, created_date) " +
                     "values (?,?,?) returning id;";
 
-            PreparedStatement ps= connection.prepareStatement(query);
+            PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1,city.getName());
-            ps.setLong(2,city.getCreatedBy());
+            ps.setString(1, city.getName());
+            ps.setLong(2, city.getCreatedBy());
             ps.setTimestamp(3, Timestamp.valueOf(city.getCreatedDate()));
 
-            ResultSet resultSet=ps.executeQuery();
+            ResultSet resultSet = ps.executeQuery();
             resultSet.next();
 
-            long id=resultSet.getLong(1);
+            long id = resultSet.getLong(1);
 
             resultSet.close();
             ps.close();
@@ -71,8 +103,8 @@ public class CityRepository {
         }
     }
 
-    public void update (City city){
-        try{
+    public void update(City city) {
+        try {
             Class.forName(DRIVER_NAME);
 
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -80,12 +112,12 @@ public class CityRepository {
             String query = "UPDATE cities " +
                     "SET name=?, updated_by=?, updated_date=? " +
                     "WHERE id=?";
-            PreparedStatement ps=connection.prepareStatement(query);
+            PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1,city.getName());
-            ps.setLong(2,city.getUpdatedBy());
+            ps.setString(1, city.getName());
+            ps.setLong(2, city.getUpdatedBy());
             ps.setTimestamp(3, Timestamp.valueOf(city.getUpdatedDate()));
-            ps.setLong(4,city.getId());
+            ps.setLong(4, city.getId());
 
             ps.executeUpdate();
 

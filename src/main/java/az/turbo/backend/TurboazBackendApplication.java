@@ -55,9 +55,13 @@ public class TurboazBackendApplication {
         cityUpdate1.setUpdatedBy(5);
         cityUpdate1.setUpdatedDate(LocalDateTime.now());
 
-        cityServices.update(cityUpdate1);
+        //cityServices.update(cityUpdate1);
 
         cityServices.retrieveAll().stream().forEach(System.out::println);
+
+        System.out.println("---------------------------------");
+
+        System.out.println(cityServices.retrieveById(4));
     }
 
     public static void UserTestMain() {
