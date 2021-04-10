@@ -10,14 +10,15 @@ import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CityServicesImpl implements CityServices {
+public class CityServiceImpl implements CityService {
     private CityRepository cityRepository;
     private ModelMapper modelMapper;
 
-    public CityServicesImpl() {
+    public CityServiceImpl() {
         cityRepository = new CityRepository();
         modelMapper = new ModelMapper();
     }
+
     @Override
     public List<CityDto> retrieveAll() {
         return cityRepository.findAll()
@@ -37,6 +38,4 @@ public class CityServicesImpl implements CityServices {
         City city = modelMapper.map(cityUpdateDto,City.class);
         cityRepository.update(city);
     }
-
-
 }

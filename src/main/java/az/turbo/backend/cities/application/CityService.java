@@ -6,10 +6,14 @@ import az.turbo.backend.cities.application.dto.CityUpdateDto;
 
 import java.util.List;
 
-public interface CityServices {
+public interface CityService {
     List<CityDto> retrieveAll();
-   // City retrieveById(long id);
+
+    // City retrieveById(long id);
+
     long create(CityCreateDto cityCreateDto);
+
     void update(CityUpdateDto cityUpdateDto);
-   // void deleteByID(long cityID, long deleteByID, LocalDateTime localDateTime);
+
+    // void deleteByID(long cityID, long deleteByID, LocalDateTime localDateTime);
 }
