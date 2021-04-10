@@ -70,4 +70,32 @@ public class CityRepository {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public void update (City city){
+        try{
+            Class.forName(DRIVER_NAME);
+
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            String query = "UPDATE cities " +
+                    "SET name=?, updated_by=?, updated_date=? " +
+                    "WHERE id=?";
+            PreparedStatement ps=connection.prepareStatement(query);
+
+            ps.setString(1,city.getName());
+            ps.setLong(2,city.getUpdatedBy());
+            ps.setTimestamp(3, Timestamp.valueOf(city.getUpdatedDate()));
+            ps.setLong(4,city.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            connection.close();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }

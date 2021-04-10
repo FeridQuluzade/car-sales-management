@@ -3,19 +3,15 @@ package az.turbo.backend;
 import az.turbo.backend.cities.application.CityServices;
 import az.turbo.backend.cities.application.CityServicesImpl;
 import az.turbo.backend.cities.application.dto.CityCreateDto;
-import az.turbo.backend.cities.application.dto.CityDto;
-import az.turbo.backend.cities.domain.model.City;
+import az.turbo.backend.cities.application.dto.CityUpdateDto;
 import az.turbo.backend.users.application.UserService;
 import az.turbo.backend.users.application.UserServiceImpl;
 import az.turbo.backend.users.application.dto.UserCreateDto;
 import az.turbo.backend.users.application.dto.UserDto;
 import az.turbo.backend.users.application.dto.UserUpdateDto;
 import az.turbo.backend.users.domain.model.Gender;
-import az.turbo.backend.users.domain.model.User;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.thymeleaf.expression.Sets;
 
-import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -40,24 +36,28 @@ public class TurboazBackendApplication {
         city1.setCreatedBy(4);
         city1.setCreatedDate(LocalDateTime.now());
 
-        cityServices.create(city1);
+      //  cityServices.create(city1);
 
         CityCreateDto city2 = new CityCreateDto();
         city2.setName("Sedan");
         city2.setCreatedBy(2);
         city2.setCreatedDate(LocalDateTime.now());
 
-        cityServices.create(city2);
+        //  cityServices.create(city2);
 
         cityServices.retrieveAll().stream().forEach(System.out::println);
 
+        System.out.println("---------------------------------");
 
-//List<CityDto> cities=cityServices.retrieveAll();
-//
-//        for (CityDto city : cities) {
-//            System.out.println(city);
-//        }
+        CityUpdateDto cityUpdate1=new CityUpdateDto();
+        cityUpdate1.setId(4L);
+        cityUpdate1.setName("Universal");
+        cityUpdate1.setUpdatedBy(5);
+        cityUpdate1.setUpdatedDate(LocalDateTime.now());
 
+        cityServices.update(cityUpdate1);
+
+        cityServices.retrieveAll().stream().forEach(System.out::println);
     }
 
     public static void UserTestMain() {
