@@ -1,10 +1,9 @@
-create table bodytypes
-(
+create table bodytypes (
     id bigserial  not null,
-    name  varchar(20) not null,
-    created_by  int8 null,
+    name varchar(20) not null,
+    created_by int8 not null,
     created_date timestamp  not null default CURRENT_TIMESTAMP,
-    updated_by  int8 null,
+    updated_by int8 null,
     updated_date timestamp null,
     deleted_by  int8 null,
     deleted_date timestamp null,
