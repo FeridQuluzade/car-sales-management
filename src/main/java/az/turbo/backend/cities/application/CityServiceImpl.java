@@ -29,22 +29,23 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityDto retrieveById(long id) {
+    public CityUpdateDto retrieveById(long id) {
         City city = cityRepository
                 .findById(id)
-                .orElseThrow(()-> new CityNotFoundException("City Not Found by this ID = "+id));
-            return modelMapper.map(city, CityDto.class);
+                .orElseThrow(() -> new CityNotFoundException("City Not Found by this ID = " + id));
+
+        return modelMapper.map(city, CityUpdateDto.class);
     }
 
     @Override
     public long create(CityCreateDto cityCreateDto) {
-        City city=modelMapper.map(cityCreateDto,City.class);
+        City city = modelMapper.map(cityCreateDto, City.class);
         return cityRepository.create(city);
     }
 
     @Override
     public void update(CityUpdateDto cityUpdateDto) {
-        City city = modelMapper.map(cityUpdateDto,City.class);
+        City city = modelMapper.map(cityUpdateDto, City.class);
         cityRepository.update(city);
     }
 }

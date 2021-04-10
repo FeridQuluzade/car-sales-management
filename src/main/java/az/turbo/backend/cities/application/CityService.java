@@ -9,7 +9,7 @@ import java.util.List;
 public interface CityService {
     List<CityDto> retrieveAll();
 
-    // City retrieveById(long id);
+    CityUpdateDto retrieveById(long id);
 
     long create(CityCreateDto cityCreateDto);
 
