@@ -1,7 +1,7 @@
 package az.turbo.backend;
 
-import az.turbo.backend.cities.application.CityServices;
-import az.turbo.backend.cities.application.CityServicesImpl;
+import az.turbo.backend.cities.application.CityService;
+import az.turbo.backend.cities.application.CityServiceImpl;
 import az.turbo.backend.cities.application.dto.CityCreateDto;
 import az.turbo.backend.cities.application.dto.CityUpdateDto;
 import az.turbo.backend.users.application.UserService;
@@ -29,7 +29,7 @@ public class TurboazBackendApplication {
     }
 
     public static void CityTestMain() {
-        CityServices cityServices = new CityServicesImpl();
+        CityService cityService = new CityServiceImpl();
 
         CityCreateDto city1 = new CityCreateDto();
         city1.setName("SUV");
@@ -45,7 +45,7 @@ public class TurboazBackendApplication {
 
         //  cityServices.create(city2);
 
-        cityServices.retrieveAll().stream().forEach(System.out::println);
+        cityService.retrieveAll().stream().forEach(System.out::println);
 
         System.out.println("---------------------------------");
 
@@ -55,13 +55,9 @@ public class TurboazBackendApplication {
         cityUpdate1.setUpdatedBy(5);
         cityUpdate1.setUpdatedDate(LocalDateTime.now());
 
-        //cityServices.update(cityUpdate1);
+        cityService.update(cityUpdate1);
 
-        cityServices.retrieveAll().stream().forEach(System.out::println);
-
-        System.out.println("---------------------------------");
-
-        System.out.println(cityServices.retrieveById(4));
+        cityService.retrieveAll().stream().forEach(System.out::println);
     }
 
     public static void UserTestMain() {

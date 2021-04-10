@@ -1,8 +1,18 @@
-package az.turbo.backend.cities.application.dto;
+package az.turbo.backend.bodytypes.domain.model;
 
-public class CityDto {
+import az.turbo.backend.shared.BaseEntity;
+
+public class BodyType extends BaseEntity {
     private long id;
     private String name;
+
+    public BodyType() {
+    }
+
+    public BodyType(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public long getId() {
         return id;
@@ -20,10 +30,4 @@ public class CityDto {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "CityDto{" +
-                "name='" + name + '\'' +
-                '}';
-    }
 }

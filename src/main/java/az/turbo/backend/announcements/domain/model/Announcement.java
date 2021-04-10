@@ -1,6 +1,6 @@
 package az.turbo.backend.announcements.domain.model;
 
-import az.turbo.backend.bodyTypes.domain.model.BodyType;
+import az.turbo.backend.bodytypes.domain.model.BodyType;
 import az.turbo.backend.brands.domain.model.BrandModel;
 import az.turbo.backend.cities.domain.model.City;
 import az.turbo.backend.colors.domain.model.Color;
