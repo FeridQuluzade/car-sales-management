@@ -5,6 +5,9 @@ import az.turbo.backend.bodytypes.application.BodyTypeServiceImpl;
 import az.turbo.backend.bodytypes.application.dto.BodyCreateDto;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeUpdateDto;
 import az.turbo.backend.bodytypes.application.exception.BodyNotFoundException;
+import az.turbo.backend.colors.application.ColorService;
+import az.turbo.backend.colors.application.ColorServiceImpl;
+import az.turbo.backend.colors.application.dto.ColorCreateDto;
 import az.turbo.backend.users.application.UserService;
 import az.turbo.backend.users.application.UserServiceImpl;
 import az.turbo.backend.users.application.dto.UserCreateDto;
@@ -35,8 +38,11 @@ public class TurboazBackendApplication {
         //bulkInsert - Jalal
         //bulkDelete - Ferid
 
-        BodyTypeService bodyTypeService= new BodyTypeServiceImpl();
-        bodyTypeService.deleteById(8L,22L,LocalDateTime.now());
-
+        ColorService colorService= new ColorServiceImpl();
+        ColorCreateDto colorCreateDto= new ColorCreateDto();
+        colorCreateDto.setName("Black");
+        colorCreateDto.setCreatedBy(22L);
+        colorCreateDto.setCreatedDate(LocalDateTime.now());
+        System.out.println(colorService.create(colorCreateDto));
     }
 }
