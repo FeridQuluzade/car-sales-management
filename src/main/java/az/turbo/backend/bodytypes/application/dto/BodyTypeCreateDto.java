@@ -2,14 +2,14 @@ package az.turbo.backend.bodytypes.application.dto;
 
 import az.turbo.backend.shared.AuditCreateDto;
 
-public class BodyCreateDto extends AuditCreateDto {
+public class BodyTypeCreateDto extends AuditCreateDto {
 
     private String name;
 
-    public BodyCreateDto() {
+    public BodyTypeCreateDto() {
     }
 
-    public BodyCreateDto(String name) {
+    public BodyTypeCreateDto(String name) {
         this.name = name;
     }
 
