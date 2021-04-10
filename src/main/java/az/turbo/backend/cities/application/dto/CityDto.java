@@ -1,17 +1,8 @@
-package az.turbo.backend.bodytypes.application.dto;
+package az.turbo.backend.cities.application.dto;
 
-public class BodyDto {
+public class CityDto {
     private long id;
     private String name;
-
-
-    public BodyDto() {
-    }
-
-    public BodyDto(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public long getId() {
         return id;
@@ -31,9 +22,8 @@ public class BodyDto {
 
     @Override
     public String toString() {
-        return "BodyDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "CityDto{" +
+                "name='" + name + '\'' +
                 '}';
     }
 }

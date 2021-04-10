@@ -1,18 +1,19 @@
 package az.turbo.backend.bodytypes.application;
 
-import az.turbo.backend.bodytypes.application.dto.BodyCreateDto;
-import az.turbo.backend.bodytypes.application.dto.BodyDto;
+import az.turbo.backend.bodytypes.application.dto.BodyTypeCreateDto;
+import az.turbo.backend.bodytypes.application.dto.BodyTypeDto;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeUpdateDto;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BodyTypeService {
-    List<BodyDto> retrieveAll();
+    List<BodyTypeDto>retrieveAll() ;
 
-    BodyDto retrieveById(long id);
+    BodyTypeUpdateDto retrieveById(long id);
 
-    long create(BodyCreateDto bodyCreateDto);
+    long create(BodyTypeCreateDto bodyTypeCreateDto);
 
     void update(BodyTypeUpdateDto bodyTypeUpdateDto);
 
