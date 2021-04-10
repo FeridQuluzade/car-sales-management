@@ -8,6 +8,7 @@ import az.turbo.backend.cities.domain.CityRepository;
 import az.turbo.backend.cities.domain.model.City;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,4 +49,11 @@ public class CityServiceImpl implements CityService {
         City city = modelMapper.map(cityUpdateDto, City.class);
         cityRepository.update(city);
     }
+
+    @Override
+    public void deleteById(long cityID, long deleteByID, LocalDateTime localDateTime) {
+        cityRepository.deleteBy_Id(cityID,deleteByID,localDateTime);
+    }
+
+
 }

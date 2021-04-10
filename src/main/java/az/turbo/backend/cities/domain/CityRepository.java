@@ -3,6 +3,7 @@ package az.turbo.backend.cities.domain;
 import az.turbo.backend.cities.domain.model.City;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -118,6 +119,34 @@ public class CityRepository {
             ps.setLong(2, city.getUpdatedBy());
             ps.setTimestamp(3, Timestamp.valueOf(city.getUpdatedDate()));
             ps.setLong(4, city.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            connection.close();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void deleteBy_Id(long id, long deleteBy, LocalDateTime deletedDate){
+        try{
+            Class.forName(DRIVER_NAME);
+
+            Connection connection= DriverManager.getConnection(URL, USER, PASSWORD);
+
+            String query ="UPDATE cities " +
+                    "SET is_deleted=cast(? as bit), deleted_by=?, deleted_date=? " +
+                    "WHERE id=?";
+
+            PreparedStatement ps =connection.prepareStatement(query);
+            ps.setString(1,"1");
+            ps.setLong(2,deleteBy);
+            ps.setTimestamp(3, Timestamp.valueOf(deletedDate));
+            ps.setLong(4,id);
 
             ps.executeUpdate();
 
