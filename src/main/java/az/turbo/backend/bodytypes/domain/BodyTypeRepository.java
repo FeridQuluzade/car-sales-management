@@ -1,6 +1,6 @@
 package az.turbo.backend.bodytypes.domain;
 
-import az.turbo.backend.bodytypes.application.exception.BodyNotFoundException;
+
 import az.turbo.backend.bodytypes.domain.model.BodyType;
 import az.turbo.backend.users.application.exception.UserNotFoundException;
 import az.turbo.backend.users.domain.UserRepository;
