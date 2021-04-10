@@ -38,8 +38,8 @@ public class TurboazBackendApplication {
         //bulkInsert - Jalal
         //bulkDelete - Ferid
 
-        ColorService colorService= new ColorServiceImpl();
-        ColorCreateDto colorCreateDto= new ColorCreateDto();
+        ColorService colorService = new ColorServiceImpl();
+        ColorCreateDto colorCreateDto = new ColorCreateDto();
         colorCreateDto.setName("Black");
         colorCreateDto.setCreatedBy(22L);
         colorCreateDto.setCreatedDate(LocalDateTime.now());
