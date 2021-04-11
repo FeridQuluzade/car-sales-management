@@ -132,7 +132,7 @@ public class CityRepository {
         }
     }
 
-    public void deleteBy_Id(long id, long deleteBy, LocalDateTime deletedDate){
+    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate){
         try{
             Class.forName(DRIVER_NAME);
 

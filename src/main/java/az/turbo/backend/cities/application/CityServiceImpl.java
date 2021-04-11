@@ -52,7 +52,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public void deleteById(long cityID, long deleteByID, LocalDateTime localDateTime) {
-        cityRepository.deleteBy_Id(cityID,deleteByID,localDateTime);
+        cityRepository.deleteById(cityID,deleteByID,localDateTime);
     }
 
 
