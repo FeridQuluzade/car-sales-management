@@ -4,6 +4,7 @@ import az.turbo.backend.cities.application.dto.CityCreateDto;
 import az.turbo.backend.cities.application.dto.CityDto;
 import az.turbo.backend.cities.application.dto.CityUpdateDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CityService {
@@ -15,5 +16,5 @@ public interface CityService {
 
     void update(CityUpdateDto cityUpdateDto);
 
-    // void deleteByID(long cityID, long deleteByID, LocalDateTime localDateTime);
+     void deleteById(long cityID, long deleteByID, LocalDateTime localDateTime);
 }

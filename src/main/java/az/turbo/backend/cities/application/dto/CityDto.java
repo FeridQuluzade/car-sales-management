@@ -23,7 +23,8 @@ public class CityDto {
     @Override
     public String toString() {
         return "CityDto{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
