@@ -42,8 +42,13 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
                 //PUBLIC ENDPOINTS
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/images/**").permitAll()
-                //users
+
+                //bodyTypes
                 .antMatchers(HttpMethod.GET, "/body-types/retrieve-all").permitAll()
+                .antMatchers(HttpMethod.GET, "/body-types/retrieve-by-id/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/body-types/create").permitAll()
+                .antMatchers(HttpMethod.PUT, "/body-types/update").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/body-types/delete/**").permitAll()
 
                 //PRIVATE ENDPOINTS
                 .anyRequest()
