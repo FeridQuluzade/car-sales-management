@@ -1,5 +1,8 @@
 package az.turbo.backend;
 
+import az.turbo.backend.cities.application.CityService;
+import az.turbo.backend.cities.application.CityServiceImpl;
+import az.turbo.backend.cities.domain.CityRepository;
 import az.turbo.backend.colors.application.ColorService;
 import az.turbo.backend.colors.application.ColorServiceImpl;
 import az.turbo.backend.colors.application.dto.ColorCreateDto;
@@ -20,11 +23,19 @@ public class TurboazBackendApplication {
         //bulkInsert - Jalal
         //bulkDelete - Ferid
 
-        ColorService colorService= new ColorServiceImpl();
-        ColorCreateDto colorCreateDto= new ColorCreateDto();
-        colorCreateDto.setName("Black");
-        colorCreateDto.setCreatedBy(22L);
-        colorCreateDto.setCreatedDate(LocalDateTime.now());
-        System.out.println(colorService.create(colorCreateDto));
+//        ColorService colorService= new ColorServiceImpl();
+//        ColorCreateDto colorCreateDto= new ColorCreateDto();
+//        colorCreateDto.setName("Black");
+//        colorCreateDto.setCreatedBy(22L);
+//        colorCreateDto.setCreatedDate(LocalDateTime.now());
+//        System.out.println(colorService.create(colorCreateDto));
+//
+
+        CityService cityService =new CityServiceImpl();
+        cityService.deleteById(7,2,LocalDateTime.now());
+
+        cityService.retrieveAll().stream().forEach(System.out::println);
+
+
     }
 }
