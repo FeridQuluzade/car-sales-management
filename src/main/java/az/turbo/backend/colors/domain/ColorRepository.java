@@ -1,19 +1,23 @@
 package az.turbo.backend.colors.domain;
 
 import az.turbo.backend.colors.domain.model.Color;
+import az.turbo.backend.shared.PostgreDbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
-
+@Service
 public class ColorRepository {
-    private final String URL = "jdbc:postgresql://localhost/turboaz";
-    private final String USER = "postgres";
-    private final String PASSWORD = "123456";
-    private final String DRIVER_NAME = "org.postgresql.Driver";
+    private PostgreDbService postgreDbService;
+    @Autowired
+    public ColorRepository(PostgreDbService postgreDbService){
+        this.postgreDbService=postgreDbService;
+    }
 
     public long create(Color color) {
         try {
-            Class.forName(DRIVER_NAME);
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            Connection connection = postgreDbService.getConnection();
             String query = "insert into colors(name,created_by,created_date)" +
                     "values(?,?,?) returning id";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -27,9 +31,7 @@ public class ColorRepository {
             preparedStatement.close();
             connection.close();
             return id;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
     }

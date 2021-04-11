@@ -3,16 +3,21 @@ package az.turbo.backend.colors.application;
 import az.turbo.backend.colors.application.dto.ColorCreateDto;
 import az.turbo.backend.colors.domain.ColorRepository;
 import az.turbo.backend.colors.domain.model.Color;
-import org.modelmapper.ModelMapper;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class ColorServiceImpl implements ColorService {
 
     private ColorRepository colorRepository;
     private ModelMapper modelMapper;
 
-    public ColorServiceImpl() {
-        colorRepository = new ColorRepository();
-        modelMapper = new ModelMapper();
+    @Autowired
+    public ColorServiceImpl(ColorRepository colorRepository,ModelMapper modelMapper) {
+        this.colorRepository=colorRepository;
+        this.modelMapper=modelMapper;
     }
 
     @Override
