@@ -12,5 +12,4 @@ create table bodytypes (
     constraint fk_bodytype_created_by foreign key (created_by) references users (id),
     constraint fk_bodytype_updated_by foreign key (updated_by) references users (id),
     constraint fk_bodytype_deleted_by foreign key (deleted_by) references users (id)
-
 );

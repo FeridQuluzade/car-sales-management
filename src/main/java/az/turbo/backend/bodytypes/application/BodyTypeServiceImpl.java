@@ -3,25 +3,28 @@ package az.turbo.backend.bodytypes.application;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeCreateDto;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeDto;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeUpdateDto;
-import az.turbo.backend.bodytypes.application.exception.BodyNotFoundException;
+import az.turbo.backend.bodytypes.application.exception.BodyTypeNotFoundException;
 import az.turbo.backend.bodytypes.domain.BodyTypeRepository;
 import az.turbo.backend.bodytypes.domain.model.BodyType;
 
 import org.modelmapper.ModelMapper;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.stream.Collectors;
 
+@Service
 public class BodyTypeServiceImpl implements BodyTypeService {
     private BodyTypeRepository bodyTypeRepository;
     private ModelMapper modelMapper;
 
-    public BodyTypeServiceImpl() {
-        bodyTypeRepository = new BodyTypeRepository();
-        modelMapper = new ModelMapper();
+    @Autowired
+    public BodyTypeServiceImpl(BodyTypeRepository bodyTypeRepository, ModelMapper modelMapper) {
+        this.bodyTypeRepository = bodyTypeRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class BodyTypeServiceImpl implements BodyTypeService {
     public BodyTypeUpdateDto retrieveById(long id) {
         BodyType bodyType = bodyTypeRepository
                 .findById(id)
-                .orElseThrow(() -> new BodyNotFoundException("BodyType not found! by Id"));
+                .orElseThrow(() -> new BodyTypeNotFoundException("BodyType not found! by Id"));
 
         return modelMapper.map(bodyType, BodyTypeUpdateDto.class);
     }

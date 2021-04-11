@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BodyTypeService {
-    List<BodyTypeDto>retrieveAll() ;
+    List<BodyTypeDto> retrieveAll();
 
     BodyTypeUpdateDto retrieveById(long id);
 

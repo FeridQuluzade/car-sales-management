@@ -1,6 +1,10 @@
 package az.turbo.backend.bodytypes.domain;
 
 import az.turbo.backend.bodytypes.domain.model.BodyType;
+import az.turbo.backend.shared.PostgreDbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -8,19 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class BodyTypeRepository {
+    private PostgreDbService postgreDbService;
 
-    private final String URL = "jdbc:postgresql://localhost/turboaz";
-    private final String USER = "postgres";
-    private final String PASSWORD = "123456";
-    private final String DRIVER_NAME = "org.postgresql.Driver";
+    @Autowired
+    public BodyTypeRepository(PostgreDbService postgreDbService) {
+        this.postgreDbService = postgreDbService;
+    }
 
     public List<BodyType> findAll() {
         try {
             List<BodyType> bodyTypes = new ArrayList<>();
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             String query = "select id, name from bodytypes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -35,8 +39,6 @@ public class BodyTypeRepository {
             return bodyTypes;
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -44,9 +46,7 @@ public class BodyTypeRepository {
         try {
             Optional<BodyType> optionalBodyType = Optional.empty();
 
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             String query = "SELECT * FROM bodytypes WHERE id=?";
 
             PreparedStatement ps = connection.prepareStatement(query);
@@ -64,8 +64,6 @@ public class BodyTypeRepository {
             connection.close();
 
             return optionalBodyType;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -73,8 +71,7 @@ public class BodyTypeRepository {
 
     public long create(BodyType bodyType) {
         try {
-            Class.forName(DRIVER_NAME);
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             String query = "insert into bodytypes(name, created_by, created_date) " +
                     "values(?,?,?) returning id";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -89,8 +86,6 @@ public class BodyTypeRepository {
             connection.close();
             return id;
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -98,9 +93,7 @@ public class BodyTypeRepository {
 
     public void update(BodyType bodyType) {
         try {
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
 
             String query = "Update bodytypes " +
                     "SET name=?, updated_by=?, updated_date=? " +
@@ -115,8 +108,6 @@ public class BodyTypeRepository {
             ps.close();
             connection.close();
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -124,8 +115,7 @@ public class BodyTypeRepository {
 
     public void DeleteById(long id, long deleteBy, LocalDateTime deletedDate) {
         try {
-            Class.forName(DRIVER_NAME);
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
 
             String query = "UPDATE bodytypes SET is_deleted= cast(? as bit),deleted_by=?,deleted_date=?" +
                     "where id=?";
@@ -141,8 +131,6 @@ public class BodyTypeRepository {
             preparedStatement.close();
             connection.close();
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
