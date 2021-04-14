@@ -19,7 +19,7 @@ public class ColorController {
         this.colorService = colorService;
     }
 
-    @GetMapping(value = "retrieve-all")
+    @GetMapping(value = "/retrieve-all")
     @ResponseBody
     public List<ColorDto> retrieveAll() {
         return colorService.retrieveAll();
