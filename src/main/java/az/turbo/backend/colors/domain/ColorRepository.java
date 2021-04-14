@@ -2,7 +2,6 @@ package az.turbo.backend.colors.domain;
 
 import az.turbo.backend.colors.domain.model.Color;
 import az.turbo.backend.shared.PostgreDbService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +62,26 @@ public class ColorRepository {
         }
     }
 
+    public void update(Color color) {
+        try {
+            Connection connection = postgreDbService.getConnection();
+            String query = "Update colors" +
+                    " SET name=?,updated_by=?,updated_date=?" +
+                    " where id=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, color.getName());
+            preparedStatement.setLong(2, color.getUpdatedBy());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(color.getUpdatedDate()));
+            preparedStatement.setLong(4, color.getId());
+            preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
 }

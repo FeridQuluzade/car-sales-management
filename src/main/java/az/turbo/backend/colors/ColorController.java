@@ -3,6 +3,7 @@ package az.turbo.backend.colors;
 import az.turbo.backend.colors.application.ColorService;
 import az.turbo.backend.colors.application.dto.ColorCreateDto;
 import az.turbo.backend.colors.application.dto.ColorDto;
+import az.turbo.backend.colors.application.dto.ColorUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,5 +31,8 @@ public class ColorController {
         return colorService.create(colorCreateDto);
     }
 
-
+    @PutMapping(value = "/update")
+    public void update(@Valid @RequestBody ColorUpdateDto colorUpdateDto) {
+        colorService.update(colorUpdateDto);
+    }
 }
