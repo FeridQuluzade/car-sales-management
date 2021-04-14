@@ -26,6 +26,12 @@ public class ColorController {
         return colorService.retrieveAll();
     }
 
+    @GetMapping(value = "/retrieve-by-id/{id}")
+    @ResponseBody
+    public ColorUpdateDto retrieveById(@PathVariable Long id) {
+        return colorService.retrieveById(id);
+    }
+
     @PostMapping(value = "/create")
     public long create(@Valid @RequestBody ColorCreateDto colorCreateDto) {
         return colorService.create(colorCreateDto);
