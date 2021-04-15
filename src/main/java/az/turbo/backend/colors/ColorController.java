@@ -3,11 +3,13 @@ package az.turbo.backend.colors;
 import az.turbo.backend.colors.application.ColorService;
 import az.turbo.backend.colors.application.dto.ColorCreateDto;
 import az.turbo.backend.colors.application.dto.ColorDto;
+
 import az.turbo.backend.colors.application.dto.ColorUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -41,4 +43,7 @@ public class ColorController {
     public void update(@Valid @RequestBody ColorUpdateDto colorUpdateDto) {
         colorService.update(colorUpdateDto);
     }
+
+    @DeleteMapping(value = "/deleted/{id}")
+    public void delete(@PathVariable Long id ){colorService.deleteById(id, 1, LocalDateTime.now());}
 }

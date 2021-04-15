@@ -50,6 +50,7 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/body-types/update").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/body-types/delete/**").permitAll()
 
+
                 //PRIVATE ENDPOINTS
                 .anyRequest()
                 .authenticated()

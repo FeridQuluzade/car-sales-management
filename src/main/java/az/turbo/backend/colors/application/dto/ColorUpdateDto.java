@@ -3,7 +3,6 @@ package az.turbo.backend.colors.application.dto;
 import az.turbo.backend.shared.AuditUpdateDto;
 
 public class ColorUpdateDto extends AuditUpdateDto {
-
     private long id;
     private String name;
 
@@ -30,5 +29,4 @@ public class ColorUpdateDto extends AuditUpdateDto {
     public void setName(String name) {
         this.name = name;
     }
-
 }
