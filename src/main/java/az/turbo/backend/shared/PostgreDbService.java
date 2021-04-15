@@ -18,7 +18,7 @@ public class PostgreDbService {
     @Value("${spring.datasource.username}")
     private String username;
 
-    @Value("spring.datasource.password")
+    @Value("${spring.datasource.password}")
     private String password;
 
     public Connection getConnection() {
