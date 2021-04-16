@@ -1,7 +1,9 @@
 package az.turbo.backend.customers.application;
 
+import az.turbo.backend.cities.application.exception.CityNotFoundException;
 import az.turbo.backend.customers.application.dto.CustomerCreateDto;
 import az.turbo.backend.customers.application.dto.CustomerDto;
+import az.turbo.backend.customers.application.dto.CustomerUpdateDto;
 import az.turbo.backend.customers.domain.CustomerRepository;
 import az.turbo.backend.customers.domain.model.Customer;
 import org.modelmapper.ModelMapper;
@@ -28,6 +30,15 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> modelMapper.map(customer, CustomerDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CustomerUpdateDto retrieveById(long id) {
+        Customer customer = customerRepository
+                .findById(id)
+                .orElseThrow(() -> new CityNotFoundException("Customer Not Found by this ID"));
+
+        return modelMapper.map(customer, CustomerUpdateDto.class);
     }
 
     @Override
