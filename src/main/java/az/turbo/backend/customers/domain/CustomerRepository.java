@@ -5,10 +5,7 @@ import az.turbo.backend.shared.PostgreDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +44,36 @@ public class CustomerRepository {
 
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables.getMessage());
+        }
+    }
+
+    public long create(Customer customer) {
+        try {
+            Connection connection = postgreDbService.getConnection();
+
+            String query = "INSERT INTO customers (fullName, phone, email, created_by, created_date) " +
+                    "values (?,?,?) returning id;";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, customer.getFullName());
+            ps.setString(2, customer.getPhone());
+            ps.setString(3, customer.getEmail());
+            ps.setLong(4, customer.getCreatedBy());
+            ps.setTimestamp(5, Timestamp.valueOf(customer.getCreatedDate()));
+
+            ResultSet resultSet = ps.executeQuery();
+            resultSet.next();
+
+            long id = resultSet.getLong(1);
+
+            resultSet.close();
+            ps.close();
+            connection.close();
+
+            return id;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

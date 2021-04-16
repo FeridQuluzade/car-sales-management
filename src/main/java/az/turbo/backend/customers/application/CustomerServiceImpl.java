@@ -1,7 +1,9 @@
 package az.turbo.backend.customers.application;
 
+import az.turbo.backend.customers.application.dto.CustomerCreateDto;
 import az.turbo.backend.customers.application.dto.CustomerDto;
 import az.turbo.backend.customers.domain.CustomerRepository;
+import az.turbo.backend.customers.domain.model.Customer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,12 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> modelMapper.map(customer, CustomerDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public long create(CustomerCreateDto customerCreateDto) {
+        Customer customer = modelMapper.map(customerCreateDto, Customer.class);
+        return customerRepository.create(customer);
     }
 
 

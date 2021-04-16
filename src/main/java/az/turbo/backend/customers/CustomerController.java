@@ -1,13 +1,13 @@
 package az.turbo.backend.customers;
 
 import az.turbo.backend.customers.application.CustomerService;
+import az.turbo.backend.customers.application.dto.CustomerCreateDto;
 import az.turbo.backend.customers.application.dto.CustomerDto;
+import az.turbo.backend.customers.domain.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,4 +26,8 @@ public class CustomerController {
         return customerService.retrieveAll();
     }
 
+    @PostMapping(value = "/create")
+    public long create(@Valid @RequestBody CustomerCreateDto customerCreateDto){
+        return customerService.create(customerCreateDto);
+    }
 }
