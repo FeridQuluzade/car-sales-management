@@ -9,6 +9,8 @@ import java.util.List;
 public interface ColorService {
     List<ColorDto> retrieveAll();
 
+    ColorUpdateDto retrieveById(long id);
+
     long create(ColorCreateDto colorCreateDto);
 
     void update(ColorUpdateDto colorUpdateDto);

@@ -3,6 +3,7 @@ package az.turbo.backend.colors.application;
 import az.turbo.backend.colors.application.dto.ColorCreateDto;
 import az.turbo.backend.colors.application.dto.ColorDto;
 import az.turbo.backend.colors.application.dto.ColorUpdateDto;
+import az.turbo.backend.colors.application.exception.ColorNotFoundException;
 import az.turbo.backend.colors.domain.ColorRepository;
 import az.turbo.backend.colors.domain.model.Color;
 
@@ -32,6 +33,14 @@ public class ColorServiceImpl implements ColorService {
                 .stream()
                 .map(color -> modelMapper.map(color, ColorDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ColorUpdateDto retrieveById(long id) {
+        Color color = colorRepository
+                .findById(id)
+                .orElseThrow(() -> new ColorNotFoundException("Color not found! by Id"));
+        return modelMapper.map(color, ColorUpdateDto.class);
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ColorRepository {
@@ -39,6 +40,34 @@ public class ColorRepository {
         }
     }
 
+    public Optional<Color> findById(long id) {
+        try {
+            Optional<Color> optionalColor = Optional.empty();
+
+            Connection connection = postgreDbService.getConnection();
+            String query = "SELECT * FROM colors" +
+                    "WHERE id=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                Color color = new Color(id, name);
+                optionalColor = Optional.of(color);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            return optionalColor;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     public long create(Color color) {
         try {
