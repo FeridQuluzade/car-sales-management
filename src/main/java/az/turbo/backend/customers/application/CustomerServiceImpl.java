@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,11 @@ public class CustomerServiceImpl implements CustomerService {
     public void update(CustomerUpdateDto customerUpdateDto) {
         Customer customer = modelMapper.map(customerUpdateDto, Customer.class);
         customerRepository.update(customer);
+    }
+
+    @Override
+    public void deleteById(long customerID, long deleteByID, LocalDateTime localDateTime) {
+        customerRepository.deleteById(customerID, deleteByID, localDateTime);
     }
 
 

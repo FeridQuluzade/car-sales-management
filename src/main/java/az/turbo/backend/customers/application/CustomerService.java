@@ -4,6 +4,7 @@ import az.turbo.backend.customers.application.dto.CustomerCreateDto;
 import az.turbo.backend.customers.application.dto.CustomerDto;
 import az.turbo.backend.customers.application.dto.CustomerUpdateDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CustomerService {
@@ -15,5 +16,5 @@ public interface CustomerService {
 
     void update(CustomerUpdateDto customerUpdateDto);
 
-    //void deleteById(long customerID, long deleteByID, LocalDateTime localDateTime);
+    void deleteById(long customerID, long deleteByID, LocalDateTime localDateTime);
 }
