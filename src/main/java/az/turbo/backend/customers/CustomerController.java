@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -41,6 +42,11 @@ public class CustomerController {
     @PutMapping(value = "/update")
     public void update (@Valid @RequestBody CustomerUpdateDto customerUpdateDto){
         customerService.update(customerUpdateDto);
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public void deleteById(@PathVariable long id){
+        customerService.deleteById(id,1, LocalDateTime.now());
     }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -135,6 +136,30 @@ public class CustomerRepository {
 
         } catch (SQLException e) {
            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void deleteById(long customerID, long deleteByID, LocalDateTime deletedDate){
+        try{
+            Connection connection = postgreDbService.getConnection();
+
+            String query = "UPDATE customers " +
+                    "SET is_deleted=cast(? as bit), deleted_by=?, deleted_date=? " +
+                    "WHERE id=? ;";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1,"1");
+            ps.setLong(2, deleteByID);
+            ps.setTimestamp(3, Timestamp.valueOf(deletedDate));
+            ps.setLong(4,customerID);
+
+            ps.executeUpdate();
+
+            ps.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
