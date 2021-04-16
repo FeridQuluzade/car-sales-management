@@ -58,6 +58,6 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
-        colorRepository.DeleteById(id,deletedBy,deletedDate);
+        colorRepository.deleteById(id,deletedBy,deletedDate);
     }
 }

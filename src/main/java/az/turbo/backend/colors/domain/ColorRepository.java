@@ -114,7 +114,7 @@ public class ColorRepository {
         }
     }
 
-    public void DeleteById(long id, long deleteBy, LocalDateTime deletedDate){
+    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate){
         try{
             Connection connection= postgreDbService.getConnection();
 
