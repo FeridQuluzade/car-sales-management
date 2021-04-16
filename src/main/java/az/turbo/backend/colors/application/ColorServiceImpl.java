@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ public class ColorServiceImpl implements ColorService {
     public ColorUpdateDto retrieveById(long id) {
         Color color = colorRepository
                 .findById(id)
-                .orElseThrow(() -> new ColorNotFoundException("Color not found! by Id"));
+                .orElseThrow(() -> new ColorNotFoundException("Color not found ! by id"));
         return modelMapper.map(color, ColorUpdateDto.class);
     }
 
@@ -53,5 +54,10 @@ public class ColorServiceImpl implements ColorService {
     public void update(ColorUpdateDto colorUpdateDto) {
         Color color = modelMapper.map(colorUpdateDto, Color.class);
         colorRepository.update(color);
+    }
+
+    @Override
+    public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
+        colorRepository.deleteById(id,deletedBy,deletedDate);
     }
 }
