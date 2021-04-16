@@ -13,7 +13,7 @@ public interface CustomerService {
 
     long create(CustomerCreateDto customerCreateDto);
 
-    //long update(CustomerUpdateDto customerUpdateDto);
+    void update(CustomerUpdateDto customerUpdateDto);
 
     //void deleteById(long customerID, long deleteByID, LocalDateTime localDateTime);
 }

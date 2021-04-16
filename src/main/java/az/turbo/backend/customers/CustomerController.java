@@ -38,5 +38,9 @@ public class CustomerController {
         return customerService.create(customerCreateDto);
     }
 
+    @PutMapping(value = "/update")
+    public void update (@Valid @RequestBody CustomerUpdateDto customerUpdateDto){
+        customerService.update(customerUpdateDto);
+    }
 
 }
