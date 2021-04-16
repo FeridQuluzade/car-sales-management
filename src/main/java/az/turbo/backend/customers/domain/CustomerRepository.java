@@ -110,4 +110,31 @@ public class CustomerRepository {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public void update(Customer customer) {
+        try {
+            Connection connection = postgreDbService.getConnection();
+
+            String query = "UPDATE customers " +
+              "SET fullName=?, phone=?, email=?, updated_by=?, updated_date=? " +
+              "WHERE id=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1,customer.getFullName());
+            ps.setString(2,customer.getPhone());
+            ps.setString(3,customer.getPhone());
+            ps.setLong(4,customer.getUpdatedBy());
+            ps.setTimestamp(5, Timestamp.valueOf(customer.getUpdatedDate()));
+            ps.setLong(6,customer.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            connection.close();
+
+        } catch (SQLException e) {
+           throw new RuntimeException(e.getMessage());
+        }
+    }
 }

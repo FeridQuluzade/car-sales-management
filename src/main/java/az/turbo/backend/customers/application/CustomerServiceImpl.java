@@ -47,5 +47,11 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.create(customer);
     }
 
+    @Override
+    public void update(CustomerUpdateDto customerUpdateDto) {
+        Customer customer = modelMapper.map(customerUpdateDto, Customer.class);
+        customerRepository.update(customer);
+    }
+
 
 }
