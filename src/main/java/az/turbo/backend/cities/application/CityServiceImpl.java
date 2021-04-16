@@ -7,18 +7,20 @@ import az.turbo.backend.cities.application.exception.CityNotFoundException;
 import az.turbo.backend.cities.domain.CityRepository;
 import az.turbo.backend.cities.domain.model.City;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Service
 public class CityServiceImpl implements CityService {
     private CityRepository cityRepository;
     private ModelMapper modelMapper;
-
-    public CityServiceImpl() {
-        cityRepository = new CityRepository();
-        modelMapper = new ModelMapper();
+@Autowired
+    public CityServiceImpl(CityRepository cityRepository, ModelMapper modelMapper) {
+        this.cityRepository=cityRepository;
+        this.modelMapper=modelMapper;
     }
 
     @Override

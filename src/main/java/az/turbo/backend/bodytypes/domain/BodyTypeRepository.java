@@ -24,7 +24,9 @@ public class BodyTypeRepository {
     public List<BodyType> findAll() {
         try {
             List<BodyType> bodyTypes = new ArrayList<>();
+
             Connection connection = postgreDbService.getConnection();
+
             String query = "select id, name from bodytypes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();

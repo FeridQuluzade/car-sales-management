@@ -1,22 +1,10 @@
-package az.turbo.backend.customers.domain.model;
+package az.turbo.backend.customers.application.dto;
 
-import az.turbo.backend.shared.BaseEntity;
-
-public class Customer extends BaseEntity {
+public class CustomerDto {
     private long id;
     private String fullName;
     private String phone;
     private String email;
-
-    public Customer() {
-    }
-
-    public Customer(long id, String fullName, String phone, String email) {
-        this.id = id;
-        this.fullName = fullName;
-        this.phone = phone;
-        this.email = email;
-    }
 
     public long getId() {
         return id;
@@ -48,5 +36,15 @@ public class Customer extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerDto{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

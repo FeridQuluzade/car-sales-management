@@ -1,6 +1,9 @@
 package az.turbo.backend.cities.domain;
 
 import az.turbo.backend.cities.domain.model.City;
+import az.turbo.backend.shared.PostgreDbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -8,19 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CityRepository {
-    private final String URL = "jdbc:postgresql://localhost/turboaz";
-    private final String USER = "postgres";
-    private final String PASSWORD = "Pass1234";
-    private final String DRIVER_NAME = "org.postgresql.Driver";
+    private PostgreDbService postgreDbService;
+
+    @Autowired
+    public CityRepository(PostgreDbService postgreDbService) {
+        this.postgreDbService = postgreDbService;
+    }
 
     public List<City> findAll() {
         try {
             List<City> cities = new ArrayList<>();
 
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             String query = "SELECT id, name FROM cities";
 
             PreparedStatement ps = connection.prepareStatement(query);
@@ -37,8 +41,6 @@ public class CityRepository {
 
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -46,9 +48,8 @@ public class CityRepository {
         try {
             Optional<City> optionalCity = Optional.empty();
 
-            Class.forName(DRIVER_NAME);
+            Connection connection = postgreDbService.getConnection();
 
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
             String query = "SELECT * FROM cities WHERE id=?";
 
             PreparedStatement ps = connection.prepareStatement(query);
@@ -66,8 +67,6 @@ public class CityRepository {
             connection.close();
 
             return optionalCity;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -75,9 +74,8 @@ public class CityRepository {
 
     public long create(City city) {
         try {
-            Class.forName(DRIVER_NAME);
+            Connection connection = postgreDbService.getConnection();
 
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
             String query = "INSERT INTO cities (name, created_by, created_date) " +
                     "values (?,?,?) returning id;";
 
@@ -99,16 +97,12 @@ public class CityRepository {
             return id;
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 
     public void update(City city) {
         try {
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
 
             String query = "UPDATE cities " +
                     "SET name=?, updated_by=?, updated_date=? " +
@@ -125,36 +119,30 @@ public class CityRepository {
             ps.close();
             connection.close();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate){
-        try{
-            Class.forName(DRIVER_NAME);
+    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate) {
+        try {
+            Connection connection = postgreDbService.getConnection();
 
-            Connection connection= DriverManager.getConnection(URL, USER, PASSWORD);
-
-            String query ="UPDATE cities " +
+            String query = "UPDATE cities " +
                     "SET is_deleted=cast(? as bit), deleted_by=?, deleted_date=? " +
                     "WHERE id=?";
 
-            PreparedStatement ps =connection.prepareStatement(query);
-            ps.setString(1,"1");
-            ps.setLong(2,deleteBy);
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, "1");
+            ps.setLong(2, deleteBy);
             ps.setTimestamp(3, Timestamp.valueOf(deletedDate));
-            ps.setLong(4,id);
+            ps.setLong(4, id);
 
             ps.executeUpdate();
 
             ps.close();
             connection.close();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
