@@ -2,6 +2,7 @@ package az.turbo.backend.colors.application;
 
 import az.turbo.backend.colors.application.dto.ColorCreateDto;
 import az.turbo.backend.colors.application.dto.ColorDto;
+import az.turbo.backend.colors.application.dto.ColorUpdateDto;
 import az.turbo.backend.colors.domain.ColorRepository;
 import az.turbo.backend.colors.domain.model.Color;
 
@@ -37,5 +38,11 @@ public class ColorServiceImpl implements ColorService {
     public long create(ColorCreateDto colorCreateDto) {
         Color color = modelMapper.map(colorCreateDto, Color.class);
         return colorRepository.create(color);
+    }
+
+    @Override
+    public void update(ColorUpdateDto colorUpdateDto) {
+        Color color = modelMapper.map(colorUpdateDto, Color.class);
+        colorRepository.update(color);
     }
 }
