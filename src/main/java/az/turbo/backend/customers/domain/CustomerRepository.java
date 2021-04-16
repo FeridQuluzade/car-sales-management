@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerRepository {
@@ -44,6 +45,39 @@ public class CustomerRepository {
 
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables.getMessage());
+        }
+    }
+
+    public Optional<Customer> findById(long id) {
+        try {
+            Optional<Customer> optionalCustomer = Optional.empty();
+
+            Connection connection = postgreDbService.getConnection();
+
+            String query = "SELECT * FROM customers " +
+                    "WHERE id=?;";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, id);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                String name = resultSet.getString("fullName");
+                String phone = resultSet.getString("phone");
+                String email = resultSet.getString("email");
+
+                Customer customer = new Customer(id, name, phone, email);
+                optionalCustomer = Optional.of(customer);
+            }
+
+            resultSet.close();
+            ps.close();
+            connection.close();
+
+            return optionalCustomer;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
