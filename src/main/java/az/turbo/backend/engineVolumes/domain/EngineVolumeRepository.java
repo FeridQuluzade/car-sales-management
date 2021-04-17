@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -116,4 +117,24 @@ public class EngineVolumeRepository {
         }
     }
 
+    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate){
+        try{
+            Connection connection= postgreDbService.getConnection();
+
+            String query="UPDATE engine SET is_deleted= cast(? as bit),deleted_by=?,deleted_date=?" +
+                    "where id=?";
+            PreparedStatement preparedStatement=connection.prepareStatement(query);
+            preparedStatement.setString(1,"id");
+            preparedStatement.setLong(2,deleteBy);
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(deletedDate));
+            preparedStatement.setLong(4,id);
+
+            preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }
