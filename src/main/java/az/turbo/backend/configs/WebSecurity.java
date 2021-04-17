@@ -54,7 +54,12 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
 
 
                 //engineVolumes
+                .antMatchers(HttpMethod.POST, "/engine-volumes/retrieve-all").permitAll()
+                .antMatchers(HttpMethod.POST, "/engine-volumes/retrieve-by-id/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/engine-volumes/create").permitAll()
+                .antMatchers(HttpMethod.POST, "/engine-volumes/update").permitAll()
+                .antMatchers(HttpMethod.POST, "/engine-volumes/delete/**").permitAll()
+
                 //PRIVATE ENDPOINTS
                 .anyRequest()
                 .authenticated()
