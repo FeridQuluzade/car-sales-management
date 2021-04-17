@@ -9,6 +9,7 @@ import java.awt.geom.RectangularShape;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EngineVolumeRepository {
@@ -43,6 +44,32 @@ public class EngineVolumeRepository {
         }
     }
 
+    public Optional<EngineVolume> findById(long id) {
+        try {
+            Optional<EngineVolume> optionalEngineVolume = Optional.empty();
+
+            Connection connection = postgreDbService.getConnection();
+            String query = "SELECT * FROM engine-volumes WHERE id=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                EngineVolume engineVolume = new EngineVolume(id, name);
+                optionalEngineVolume = Optional.of(engineVolume);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            return optionalEngineVolume;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     public long create(EngineVolume engineVolume) {
         try {

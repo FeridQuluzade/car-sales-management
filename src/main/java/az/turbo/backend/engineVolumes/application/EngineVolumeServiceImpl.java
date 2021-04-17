@@ -2,6 +2,8 @@ package az.turbo.backend.engineVolumes.application;
 
 import az.turbo.backend.engineVolumes.application.dto.EngineVolumeCreateDto;
 import az.turbo.backend.engineVolumes.application.dto.EngineVolumeDto;
+import az.turbo.backend.engineVolumes.application.dto.EngineVolumeUpdateDto;
+import az.turbo.backend.engineVolumes.application.exception.EngineVolumeNotFoundException;
 import az.turbo.backend.engineVolumes.domain.EngineVolumeRepository;
 import az.turbo.backend.engineVolumes.domain.model.EngineVolume;
 
@@ -30,6 +32,15 @@ public class EngineVolumeServiceImpl implements EngineVolumeService {
                 .stream()
                 .map(engineVolume -> modelMapper.map(engineVolume, EngineVolumeDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public EngineVolumeUpdateDto retrieveById(long id) {
+        EngineVolume engineVolume = engineVolumeRepository
+                .findById(id)
+                .orElseThrow(() -> new EngineVolumeNotFoundException("Engine-volume not found!"));
+
+        return modelMapper.map(engineVolume, EngineVolumeUpdateDto.class);
     }
 
     @Override
