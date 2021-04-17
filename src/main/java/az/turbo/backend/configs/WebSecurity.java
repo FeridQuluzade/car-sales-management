@@ -51,6 +51,10 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/body-types/delete/**").permitAll()
 
 
+
+
+                //engineVolumes
+                .antMatchers(HttpMethod.POST, "/engine-volumes/create").permitAll()
                 //PRIVATE ENDPOINTS
                 .anyRequest()
                 .authenticated()
