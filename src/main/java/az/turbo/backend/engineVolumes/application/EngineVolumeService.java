@@ -11,7 +11,7 @@ public interface EngineVolumeService {
 
     EngineVolumeUpdateDto retrieveById(long id);
 
-
     long create(EngineVolumeCreateDto engineVolumeCreateDto);
 
+    void update(EngineVolumeUpdateDto engineVolumeUpdateDto);
 }
