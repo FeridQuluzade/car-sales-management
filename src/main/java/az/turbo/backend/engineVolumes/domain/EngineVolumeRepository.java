@@ -5,7 +5,6 @@ import az.turbo.backend.shared.PostgreDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.geom.RectangularShape;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +89,27 @@ public class EngineVolumeRepository {
             connection.close();
             return id;
 
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void update(EngineVolume engineVolume) {
+        try {
+            Connection connection = postgreDbService.getConnection();
+
+            String query = "Update engine-volumes" +
+                    "SET name=?,updated_by=?,updated_date=?" +
+                    "where id=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, engineVolume.getValue());
+            preparedStatement.setLong(2, engineVolume.getUpdatedBy());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(engineVolume.getUpdatedDate()));
+            preparedStatement.setLong(4, engineVolume.getId());
+
+            preparedStatement.close();
+            connection.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());

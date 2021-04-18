@@ -48,4 +48,10 @@ public class EngineVolumeServiceImpl implements EngineVolumeService {
         EngineVolume engineVolume = modelMapper.map(engineVolumeCreateDto, EngineVolume.class);
         return engineVolumeRepository.create(engineVolume);
     }
+
+    @Override
+    public void update(EngineVolumeUpdateDto engineVolumeUpdateDto) {
+            EngineVolume engineVolume=modelMapper.map(engineVolumeUpdateDto,EngineVolume.class);
+            engineVolumeRepository.update(engineVolume);
+    }
 }

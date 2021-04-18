@@ -36,4 +36,9 @@ public class EngineVolumeController {
     public long create(@Valid @RequestBody EngineVolumeCreateDto engineVolumeCreateDto) {
         return engineVolumeService.create(engineVolumeCreateDto);
     }
+
+    @PutMapping(value = "/update")
+    public void update(@Valid @RequestBody EngineVolumeUpdateDto engineVolumeUpdateDto) {
+        engineVolumeService.update(engineVolumeUpdateDto);
+    }
 }
