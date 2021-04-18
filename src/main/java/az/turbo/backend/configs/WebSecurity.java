@@ -50,6 +50,12 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/body-types/update").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/body-types/delete/**").permitAll()
 
+                //colors
+                .antMatchers(HttpMethod.GET, "/colors/retrieve-all").permitAll()
+                .antMatchers(HttpMethod.GET, "/colors/retrieve-by-id/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/colors/create").permitAll()
+                .antMatchers(HttpMethod.GET, "/colors/update").permitAll()
+                .antMatchers(HttpMethod.GET, "/colors/delete/**").permitAll()
                 //cities
                 .antMatchers(HttpMethod.GET, "/cities/retrieve-all").permitAll()
                 .antMatchers(HttpMethod.GET, "/cities/retrieve-by-id/**").permitAll()
