@@ -1,8 +1,8 @@
 package az.turbo.backend.cities.application.dto;
 
-import az.turbo.backend.shared.AuditCreateDto;
+import az.turbo.backend.shared.AuditedCreateDto;
 
-public class CityCreateDto extends AuditCreateDto {
+public class CityCreateDto extends AuditedCreateDto {
     private String name;
 
     public String getName() {

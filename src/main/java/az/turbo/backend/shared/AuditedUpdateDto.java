@@ -2,7 +2,7 @@ package az.turbo.backend.shared;
 
 import java.time.LocalDateTime;
 
-public class AuditUpdateDto {
+public class AuditedUpdateDto {
     private long updatedBy;
     private LocalDateTime updatedDate;
 

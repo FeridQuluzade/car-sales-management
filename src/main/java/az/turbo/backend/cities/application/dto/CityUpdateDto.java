@@ -1,8 +1,8 @@
 package az.turbo.backend.cities.application.dto;
 
-import az.turbo.backend.shared.AuditUpdateDto;
+import az.turbo.backend.shared.AuditedUpdateDto;
 
-public class CityUpdateDto extends AuditUpdateDto {
+public class CityUpdateDto extends AuditedUpdateDto {
     private long id;
     private String name;
 

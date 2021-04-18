@@ -1,9 +1,9 @@
 package az.turbo.backend.users.application.dto;
 
-import az.turbo.backend.shared.AuditUpdateDto;
+import az.turbo.backend.shared.AuditedUpdateDto;
 import az.turbo.backend.users.domain.model.Gender;
 
-public class UserUpdateDto extends AuditUpdateDto {
+public class UserUpdateDto extends AuditedUpdateDto {
     private long id;
     private String firstName;
     private String lastName;

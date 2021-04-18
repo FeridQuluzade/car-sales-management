@@ -2,12 +2,15 @@ package az.turbo.backend.users.application;
 
 import az.turbo.backend.users.application.dto.UserCreateDto;
 import az.turbo.backend.users.application.dto.UserDto;
+import az.turbo.backend.users.application.dto.UserPasswordDto;
 import az.turbo.backend.users.application.dto.UserUpdateDto;
 import az.turbo.backend.users.application.exception.UserDuplicatedException;
 import az.turbo.backend.users.application.exception.UserNotFoundException;
 import az.turbo.backend.users.domain.UserRepository;
 import az.turbo.backend.users.domain.model.User;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,13 +18,15 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public UserServiceImpl() {
-        userRepository = new UserRepository();
-        modelMapper = new ModelMapper();
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -33,19 +38,18 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    //Jalal
     @Override
     public UserDto retrieveById(long id) {
         return null;
     }
 
     @Override
-    public UserDto retrieveByEmail(String email) {
+    public UserPasswordDto retrieveByEmail(String email) {
         User user = userRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found by email=" + email));
 
-        return modelMapper.map(user, UserDto.class);
+        return modelMapper.map(user, UserPasswordDto.class);
     }
 
     @Override
@@ -79,6 +83,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found by id=" + id));
 
         userRepository.updatePassword(id, password);
+    }
+
+    @Override
+    public void updateRefreshToken(long id, String refreshToken) {
+        userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
+
+        userRepository.updateRefreshToken(id, refreshToken);
     }
 
     @Override

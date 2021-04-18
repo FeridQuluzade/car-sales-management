@@ -1,8 +1,8 @@
 package az.turbo.backend.colors.application.dto;
 
-import az.turbo.backend.shared.AuditCreateDto;
+import az.turbo.backend.shared.AuditedCreateDto;
 
-public class ColorCreateDto extends AuditCreateDto {
+public class ColorCreateDto extends AuditedCreateDto {
     private String name;
 
     public ColorCreateDto() {

@@ -1,8 +1,8 @@
 package az.turbo.backend.bodytypes.application.dto;
 
-import az.turbo.backend.shared.AuditUpdateDto;
+import az.turbo.backend.shared.AuditedUpdateDto;
 
-public class BodyTypeUpdateDto extends AuditUpdateDto {
+public class BodyTypeUpdateDto extends AuditedUpdateDto {
    private long id;
    private String name;
 

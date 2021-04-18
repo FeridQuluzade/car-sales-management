@@ -1,7 +1,10 @@
 package az.turbo.backend.users.domain;
 
+import az.turbo.backend.shared.PostgreDbService;
 import az.turbo.backend.users.domain.model.Gender;
 import az.turbo.backend.users.domain.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -10,19 +13,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Service
 public class UserRepository {
-    private final String URL = "jdbc:postgresql://localhost/turboaz";
-    private final String USER = "postgres";
-    private final String PASSWORD = "Pass1234";
-    private final String DRIVER_NAME = "org.postgresql.Driver";
+    private PostgreDbService postgreDbService;
+
+    @Autowired
+    public UserRepository(PostgreDbService postgreDbService) {
+        this.postgreDbService = postgreDbService;
+    }
 
     public List<User> findAll() {
         try {
             List<User> users = new ArrayList<>();
 
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             String query = "select id, first_name, last_name, gender, email, password from users " +
                     "where is_deleted = bit'0'";
 
@@ -51,8 +55,6 @@ public class UserRepository {
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -60,9 +62,7 @@ public class UserRepository {
         try {
             Optional<User> optionalUser = Optional.empty();
 
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             String query = "select * from users WHERE id=?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -95,8 +95,6 @@ public class UserRepository {
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -104,9 +102,7 @@ public class UserRepository {
         try {
             Optional<User> optionalUser = Optional.empty();
 
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             String query = "select * from users WHERE email=?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -139,16 +135,12 @@ public class UserRepository {
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 
     public long create(User user) {
         try {
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             String query = "insert into users(first_name, last_name, gender, email, password, created_by, created_date)" +
                     "values(?,?,?,?,?,?,?) returning id";
 
@@ -175,16 +167,12 @@ public class UserRepository {
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         }
     }
 
     public void update(User user) {
         try {
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
 
             String query = "update users " +
                     "SET first_name=?, last_name=?, gender=?, email=?, updated_by=?, updated_date=? " +
@@ -205,8 +193,6 @@ public class UserRepository {
             ps.close();
             connection.close();
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -214,9 +200,7 @@ public class UserRepository {
 
     public void updatePassword(long id, String password) {
         try {
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
 
             String query = "update users " +
                     "SET password=? " +
@@ -232,8 +216,29 @@ public class UserRepository {
             ps.close();
             connection.close();
 
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void updateRefreshToken(long id, String refreshToken) {
+        try {
+            Connection connection = postgreDbService.getConnection();
+
+            String query = "update users " +
+                    "SET refresh_token=? " +
+                    "where id=?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, refreshToken);
+            ps.setLong(2, id);
+
+            ps.executeUpdate();
+
+            ps.close();
+            connection.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -241,9 +246,7 @@ public class UserRepository {
 
     public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
         try {
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
 
             String query = "update users " +
                     "SET is_deleted=cast(? as bit), deleted_by=?, deleted_date=? " +
@@ -261,8 +264,6 @@ public class UserRepository {
             ps.close();
             connection.close();
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -270,9 +271,7 @@ public class UserRepository {
 
     public void deleteAll(Set<Long> ids, long deletedBy, LocalDateTime deletedDate) {
         try {
-            Class.forName(DRIVER_NAME);
-
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection connection = postgreDbService.getConnection();
             connection.setAutoCommit(false);
 
             String query = "update users " +
@@ -296,8 +295,6 @@ public class UserRepository {
             ps.close();
             connection.close();
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage());
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }

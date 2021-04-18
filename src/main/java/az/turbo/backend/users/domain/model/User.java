@@ -7,8 +7,11 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private Gender gender;
+    private Role role;
     private String email;
+    private boolean isEmailConfirmed;
     private String password;
+    private String refreshToken;
 
     public User() {}
 
