@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -41,4 +42,7 @@ public class EngineVolumeController {
     public void update(@Valid @RequestBody EngineVolumeUpdateDto engineVolumeUpdateDto) {
         engineVolumeService.update(engineVolumeUpdateDto);
     }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public void delete(@PathVariable Long id){engineVolumeService.deleteById(id,1, LocalDateTime.now());}
 }

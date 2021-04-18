@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,5 +54,10 @@ public class EngineVolumeServiceImpl implements EngineVolumeService {
     public void update(EngineVolumeUpdateDto engineVolumeUpdateDto) {
             EngineVolume engineVolume=modelMapper.map(engineVolumeUpdateDto,EngineVolume.class);
             engineVolumeRepository.update(engineVolume);
+    }
+
+    @Override
+    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate) {
+        engineVolumeRepository.deleteById(id,deleteBy,deletedDate);
     }
 }
