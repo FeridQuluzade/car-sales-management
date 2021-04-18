@@ -2,6 +2,7 @@ package az.turbo.backend.users.domain;
 
 import az.turbo.backend.shared.PostgreDbService;
 import az.turbo.backend.users.domain.model.Gender;
+import az.turbo.backend.users.domain.model.Role;
 import az.turbo.backend.users.domain.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,13 +40,19 @@ public class UserRepository {
                 int gender = resultSet.getInt("gender");
                 String email = resultSet.getString("email");
                 String hashPassword = resultSet.getString("password");
+                Boolean isEmailConfirmed = resultSet.getBoolean("is_email_confirmed");
+                String refreshToken = resultSet.getString("refresh_token");
+                Role role = Role.valueOf(resultSet.getString("role"));
 
                 users.add(new User(id,
                         firstName,
                         lastName,
                         gender == 0 ? Gender.MALE : Gender.FEMALE,
+                        role,
                         email,
-                        hashPassword));
+                        isEmailConfirmed,
+                        hashPassword,
+                        refreshToken));
             }
             resultSet.close();
             preparedStatement.close();
@@ -76,13 +83,19 @@ public class UserRepository {
                 int gender = resultSet.getInt("gender");
                 String email = resultSet.getString("email");
                 String hashPassword = resultSet.getString("password");
+                Boolean isEmailConfirmed = resultSet.getBoolean("is_email_confirmed");
+                String refreshToken = resultSet.getString("refresh_token");
+                Role role = Role.valueOf(resultSet.getString("role"));
 
                 User user = new User(id,
                         firstName,
                         lastName,
                         gender == 0 ? Gender.MALE : Gender.FEMALE,
+                        role,
                         email,
-                        hashPassword);
+                        isEmailConfirmed,
+                        hashPassword,
+                        refreshToken);
 
                 optionalUser = Optional.of(user);
             }
@@ -116,13 +129,19 @@ public class UserRepository {
                 String lastName = resultSet.getString("last_name");
                 int gender = resultSet.getInt("gender");
                 String hashPassword = resultSet.getString("password");
+                Boolean isEmailConfirmed = resultSet.getBoolean("is_email_confirmed");
+                String refreshToken = resultSet.getString("refresh_token");
+                Role role = Role.valueOf(resultSet.getString("role"));
 
                 User user = new User(id,
                         firstName,
                         lastName,
                         gender == 0 ? Gender.MALE : Gender.FEMALE,
+                        role,
                         email,
-                        hashPassword);
+                        isEmailConfirmed,
+                        hashPassword,
+                        refreshToken);
 
                 optionalUser = Optional.of(user);
             }

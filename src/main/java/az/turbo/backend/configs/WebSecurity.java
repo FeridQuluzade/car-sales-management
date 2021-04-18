@@ -1,5 +1,6 @@
 package az.turbo.backend.configs;
 
+import az.turbo.backend.users.application.UserService;
 import az.turbo.backend.users.domain.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 class WebSecurity extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,11 +49,11 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images/**").permitAll()
 
                 //bodyTypes
-                .antMatchers(HttpMethod.GET, "/body-types/retrieve-all").permitAll()
-                .antMatchers(HttpMethod.GET, "/body-types/retrieve-by-id/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/body-types/create").permitAll()
-                .antMatchers(HttpMethod.PUT, "/body-types/update").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/body-types/delete/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/users/password").permitAll()
+//                .antMatchers(HttpMethod.GET, "/body-types/retrieve-by-id/**").permitAll()
+//                .antMatchers(HttpMethod.POST, "/body-types/create").permitAll()
+//                .antMatchers(HttpMethod.PUT, "/body-types/update").permitAll()
+//                .antMatchers(HttpMethod.DELETE, "/body-types/delete/**").permitAll()
 
                 //colors
                 .antMatchers(HttpMethod.GET, "/colors/retrieve-all").permitAll()
@@ -84,18 +88,17 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                //.addFilter(jwtAuthenticationFilter())
-                //.addFilter(new JWTAuthorizationFilter(authenticationManager()))
-                //.addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
+                .addFilter(jwtAuthenticationFilter())
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-//    private JWTAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-//        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager(), userService);
-//        jwtAuthenticationFilter.setFilterProcessesUrl("/users/sign-in");
-//        return jwtAuthenticationFilter;
-//    }
-
+    private JWTAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager(), userService);
+        jwtAuthenticationFilter.setFilterProcessesUrl("/users/sign-in");
+        return jwtAuthenticationFilter;
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -104,4 +107,3 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
         return source;
     }
 }
-

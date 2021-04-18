@@ -4,6 +4,7 @@ import az.turbo.backend.bodytypes.application.BodyTypeService;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeCreateDto;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeDto;
 import az.turbo.backend.bodytypes.application.dto.BodyTypeUpdateDto;
+import az.turbo.backend.shared.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,16 +36,20 @@ public class BodyTypeController {
 
     @PostMapping(value = "/create")
     public long create(@Valid @RequestBody BodyTypeCreateDto bodyTypeCreateDto) {
+        bodyTypeCreateDto.setCreatedBy(UserContextHolder.getUserId());
+        bodyTypeCreateDto.setCreatedDate(LocalDateTime.now());
         return bodyTypeService.create(bodyTypeCreateDto);
     }
 
     @PutMapping(value = "/update")
     public void update(@Valid @RequestBody BodyTypeUpdateDto bodyTypeUpdateDto) {
+        bodyTypeUpdateDto.setUpdatedBy(UserContextHolder.getUserId());
+        bodyTypeUpdateDto.setUpdatedDate(LocalDateTime.now());
         bodyTypeService.update(bodyTypeUpdateDto);
     }
 
     @DeleteMapping(value = "/delete/{id}")
     public void delete(@PathVariable Long id) {
-        bodyTypeService.deleteById(id, 1, LocalDateTime.now());
+        bodyTypeService.deleteById(id, UserContextHolder.getUserId(), LocalDateTime.now());
     }
 }

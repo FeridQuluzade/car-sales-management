@@ -1,9 +1,14 @@
-package az.turbo.backend.shared;
+package az.turbo.backend.shared.audited;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 
 public class AuditedCreateDto {
+    @JsonIgnore
     private long createdBy;
+
+    @JsonIgnore
     private LocalDateTime createdDate;
 
     public long getCreatedBy() {

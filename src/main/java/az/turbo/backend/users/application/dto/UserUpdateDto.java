@@ -1,6 +1,6 @@
 package az.turbo.backend.users.application.dto;
 
-import az.turbo.backend.shared.AuditedUpdateDto;
+import az.turbo.backend.shared.audited.AuditedUpdateDto;
 import az.turbo.backend.users.domain.model.Gender;
 
 public class UserUpdateDto extends AuditedUpdateDto {

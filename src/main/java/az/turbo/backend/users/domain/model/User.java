@@ -19,14 +19,20 @@ public class User extends BaseEntity {
                 String firstName,
                 String lastName,
                 Gender gender,
+                Role role,
                 String email,
-                String password) {
+                Boolean isEmailConfirmed,
+                String password,
+                String refreshToken) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
+        this.role = role;
         this.email = email;
+        this.isEmailConfirmed = isEmailConfirmed;
         this.password = password;
+        this.refreshToken = refreshToken;
     }
 
     public long getId() {
@@ -61,12 +67,28 @@ public class User extends BaseEntity {
         this.gender = gender;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isEmailConfirmed() {
+        return isEmailConfirmed;
+    }
+
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        isEmailConfirmed = emailConfirmed;
     }
 
     public String getPassword() {
@@ -77,4 +99,11 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

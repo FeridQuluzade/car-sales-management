@@ -1,8 +1,8 @@
 package az.turbo.backend.engineVolumes.application.dto;
 
-import az.turbo.backend.shared.AuditCreateDto;
+import az.turbo.backend.shared.audited.AuditedCreateDto;
 
-public class EngineVolumeCreateDto extends AuditCreateDto {
+public class EngineVolumeCreateDto extends AuditedCreateDto {
     private String name;
 
     public EngineVolumeCreateDto() {

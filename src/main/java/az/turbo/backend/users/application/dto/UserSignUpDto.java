@@ -1,7 +1,7 @@
 package az.turbo.backend.users.application.dto;
 
 import az.turbo.backend.configs.MessageConstants;
-import az.turbo.backend.shared.AuditedCreateDto;
+import az.turbo.backend.shared.audited.AuditedCreateDto;
 import az.turbo.backend.users.domain.model.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

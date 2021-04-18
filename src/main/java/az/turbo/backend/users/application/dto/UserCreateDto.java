@@ -1,6 +1,6 @@
 package az.turbo.backend.users.application.dto;
 
-import az.turbo.backend.shared.AuditedCreateDto;
+import az.turbo.backend.shared.audited.AuditedCreateDto;
 import az.turbo.backend.users.domain.model.Gender;
 
 public class UserCreateDto extends AuditedCreateDto {

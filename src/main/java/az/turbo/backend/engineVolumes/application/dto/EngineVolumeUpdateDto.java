@@ -1,8 +1,8 @@
 package az.turbo.backend.engineVolumes.application.dto;
 
-import az.turbo.backend.shared.AuditUpdateDto;
+import az.turbo.backend.shared.audited.AuditedUpdateDto;
 
-public class EngineVolumeUpdateDto extends AuditUpdateDto {
+public class EngineVolumeUpdateDto extends AuditedUpdateDto {
 
     private long id;
     private String value;

@@ -1,6 +1,6 @@
 package az.turbo.backend.colors.application.dto;
 
-import az.turbo.backend.shared.AuditedUpdateDto;
+import az.turbo.backend.shared.audited.AuditedUpdateDto;
 
 public class ColorUpdateDto extends AuditedUpdateDto {
     private long id;
