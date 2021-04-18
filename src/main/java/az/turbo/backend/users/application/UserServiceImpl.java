@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.create(user);
     }
 
-    //Jalal
     @Override
     public Set<Long> createAll(List<UserCreateDto> userCreateDtoList) {
         return null;

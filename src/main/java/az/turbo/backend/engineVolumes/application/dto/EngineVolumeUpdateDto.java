@@ -1,15 +1,16 @@
-package az.turbo.backend.engineVolumes.domain.model;
+package az.turbo.backend.engineVolumes.application.dto;
 
-import az.turbo.backend.shared.BaseEntity;
+import az.turbo.backend.shared.AuditUpdateDto;
 
-public class EngineVolume extends BaseEntity {
+public class EngineVolumeUpdateDto extends AuditUpdateDto {
+
     private long id;
     private String value;
 
-    public EngineVolume() {
+    public EngineVolumeUpdateDto() {
     }
 
-    public EngineVolume(long id, String value) {
+    public EngineVolumeUpdateDto(long id, String value) {
         this.id = id;
         this.value = value;
     }

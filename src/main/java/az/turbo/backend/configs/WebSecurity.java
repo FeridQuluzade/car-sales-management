@@ -57,6 +57,29 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/colors/create").permitAll()
                 .antMatchers(HttpMethod.GET, "/colors/update").permitAll()
                 .antMatchers(HttpMethod.GET, "/colors/delete/**").permitAll()
+                //cities
+                .antMatchers(HttpMethod.GET, "/cities/retrieve-all").permitAll()
+                .antMatchers(HttpMethod.GET, "/cities/retrieve-by-id/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/cities/create").permitAll()
+                .antMatchers(HttpMethod.PUT, "/cities/update").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/cities/delete/**").permitAll()
+
+                //customers
+                .antMatchers(HttpMethod.GET, "/customers/retrieve-all").permitAll()
+                .antMatchers(HttpMethod.GET, "/customers/retrieve-by-id/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/customers/create").permitAll()
+                .antMatchers(HttpMethod.PUT, "/customers/update").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/customers/delete/**").permitAll()
+
+
+
+                //engineVolumes
+                .antMatchers(HttpMethod.POST, "/engine-volumes/retrieve-all").permitAll()
+                .antMatchers(HttpMethod.POST, "/engine-volumes/retrieve-by-id/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/engine-volumes/create").permitAll()
+                .antMatchers(HttpMethod.POST, "/engine-volumes/update").permitAll()
+                .antMatchers(HttpMethod.POST, "/engine-volumes/delete/**").permitAll()
+
                 //PRIVATE ENDPOINTS
                 .anyRequest()
                 .authenticated()
