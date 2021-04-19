@@ -100,36 +100,32 @@ public class EngineVolumeRepository {
         try {
             Connection connection = postgreDbService.getConnection();
 
-            String query = "Update enginevolumes" +
-                    "SET value=?,updated_by=?,updated_date=?" +
-                    "where id=?";
+            String query = "UPDATE enginevolumes SET value=?,updated_by=?,updated_date=? where id=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, engineVolume.getValue());
             preparedStatement.setLong(2, engineVolume.getUpdatedBy());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(engineVolume.getUpdatedDate()));
             preparedStatement.setLong(4, engineVolume.getId());
-
             preparedStatement.executeUpdate();
+
             preparedStatement.close();
             connection.close();
-
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate){
-        try{
-            Connection connection= postgreDbService.getConnection();
+    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate) {
+        try {
+            Connection connection = postgreDbService.getConnection();
 
-            String query="UPDATE enginevolumes SET is_deleted= cast(? as bit),deleted_by=?,deleted_date=?" +
-                    "where id=?;";
-            PreparedStatement preparedStatement=connection.prepareStatement(query);
-            preparedStatement.setString(1,"id");
-            preparedStatement.setLong(2,deleteBy);
+            String query = "UPDATE enginevolumes SET is_deleted= cast(? as bit),deleted_by=?,deleted_date=?" +
+                    "where  id=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "1");
+            preparedStatement.setLong(2, deleteBy);
             preparedStatement.setTimestamp(3, Timestamp.valueOf(deletedDate));
-            preparedStatement.setLong(4,id);
-
+            preparedStatement.setLong(4, id);
             preparedStatement.executeUpdate();
 
             preparedStatement.close();

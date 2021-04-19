@@ -49,5 +49,7 @@ public class EngineVolumeController {
     }
 
     @DeleteMapping(value = "/deleted/{id}")
-    public void delete(@PathVariable Long id){engineVolumeService.deleteById(id,UserContextHolder.getUserId(), LocalDateTime.now());}
+    public void delete(@PathVariable Long id) {
+        engineVolumeService.deleteById(id, UserContextHolder.getUserId(), LocalDateTime.now());
+    }
 }
