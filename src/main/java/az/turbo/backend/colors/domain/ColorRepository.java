@@ -127,6 +127,11 @@ public class ColorRepository {
             preparedStatement.setTimestamp(3,Timestamp.valueOf(deletedDate));
             preparedStatement.setLong(4,id);
 
+            preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            connection.close();
+
         }catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
