@@ -52,12 +52,14 @@ public class EngineVolumeServiceImpl implements EngineVolumeService {
 
     @Override
     public void update(EngineVolumeUpdateDto engineVolumeUpdateDto) {
-            EngineVolume engineVolume=modelMapper.map(engineVolumeUpdateDto,EngineVolume.class);
-            engineVolumeRepository.update(engineVolume);
+        EngineVolume engineVolume=modelMapper.map(engineVolumeUpdateDto,EngineVolume.class);
+        engineVolumeRepository.update(engineVolume);
     }
 
     @Override
-    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate) {
-        engineVolumeRepository.deleteById(id,deleteBy,deletedDate);
+    public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
+        engineVolumeRepository.deleteById(id,deletedBy,deletedDate);
     }
+
+
 }
