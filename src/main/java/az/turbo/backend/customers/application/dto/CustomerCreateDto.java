@@ -1,6 +1,8 @@
 package az.turbo.backend.customers.application.dto;
 
-public class CustomerCreateDto {
+import az.turbo.backend.shared.audited.AuditedCreateDto;
+
+public class CustomerCreateDto extends AuditedCreateDto {
     private String fullName;
     private String phone;
     private String email;

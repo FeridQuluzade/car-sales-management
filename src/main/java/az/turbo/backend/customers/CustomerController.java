@@ -4,7 +4,7 @@ import az.turbo.backend.customers.application.CustomerService;
 import az.turbo.backend.customers.application.dto.CustomerCreateDto;
 import az.turbo.backend.customers.application.dto.CustomerDto;
 import az.turbo.backend.customers.application.dto.CustomerUpdateDto;
-import az.turbo.backend.customers.domain.model.Customer;
+import az.turbo.backend.shared.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,17 +36,21 @@ public class CustomerController {
 
     @PostMapping(value = "/create")
     public long create(@Valid @RequestBody CustomerCreateDto customerCreateDto){
+        customerCreateDto.setCreatedBy(UserContextHolder.getUserId());
+        customerCreateDto.setCreatedDate(LocalDateTime.now());
         return customerService.create(customerCreateDto);
     }
 
     @PutMapping(value = "/update")
     public void update (@Valid @RequestBody CustomerUpdateDto customerUpdateDto){
+        customerUpdateDto.setUpdatedBy(UserContextHolder.getUserId());
+        customerUpdateDto.setUpdatedDate(LocalDateTime.now());
         customerService.update(customerUpdateDto);
     }
 
     @DeleteMapping(value = "/delete/{id}")
     public void deleteById(@PathVariable long id){
-        customerService.deleteById(id,1, LocalDateTime.now());
+        customerService.deleteById(id,UserContextHolder.getUserId(), LocalDateTime.now());
     }
 
 }

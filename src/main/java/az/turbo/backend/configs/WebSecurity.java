@@ -1,16 +1,13 @@
 package az.turbo.backend.configs;
 
 import az.turbo.backend.users.application.UserService;
-import az.turbo.backend.users.domain.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -49,40 +46,46 @@ class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images/**").permitAll()
 
                 //bodyTypes
-                .antMatchers(HttpMethod.GET, "/users/password").permitAll()
-//                .antMatchers(HttpMethod.GET, "/body-types/retrieve-by-id/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/body-types/create").permitAll()
-//                .antMatchers(HttpMethod.PUT, "/body-types/update").permitAll()
-//                .antMatchers(HttpMethod.DELETE, "/body-types/delete/**").permitAll()
+                //.antMatchers(HttpMethod.GET, "/users/password").permitAll()
+                .antMatchers(HttpMethod.GET, "/body-types/retrieve-all").permitAll()
+                .antMatchers(HttpMethod.GET, "/body-types/retrieve-by-id/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/body-types/create").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.PUT, "/body-types/update").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.DELETE, "/body-types/delete/**").hasAuthority("ADMINISTRATOR")
 
                 //colors
                 .antMatchers(HttpMethod.GET, "/colors/retrieve-all").permitAll()
                 .antMatchers(HttpMethod.GET, "/colors/retrieve-by-id/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/colors/create").permitAll()
-                .antMatchers(HttpMethod.GET, "/colors/update").permitAll()
-                .antMatchers(HttpMethod.GET, "/colors/delete/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/colors/create").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.GET, "/colors/update").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.GET, "/colors/delete/**").hasAuthority("ADMINISTRATOR")
                 //cities
                 .antMatchers(HttpMethod.GET, "/cities/retrieve-all").permitAll()
                 .antMatchers(HttpMethod.GET, "/cities/retrieve-by-id/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/cities/create").permitAll()
-                .antMatchers(HttpMethod.PUT, "/cities/update").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/cities/delete/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/cities/create").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.PUT, "/cities/update").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.DELETE, "/cities/delete/**").hasAuthority("ADMINISTRATOR")
 
                 //customers
                 .antMatchers(HttpMethod.GET, "/customers/retrieve-all").permitAll()
                 .antMatchers(HttpMethod.GET, "/customers/retrieve-by-id/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/customers/create").permitAll()
-                .antMatchers(HttpMethod.PUT, "/customers/update").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/customers/delete/**").permitAll()
-
-
+                .antMatchers(HttpMethod.POST, "/customers/create").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.PUT, "/customers/update").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.DELETE, "/customers/delete/**").hasAuthority("ADMINISTRATOR")
 
                 //engineVolumes
                 .antMatchers(HttpMethod.POST, "/engine-volumes/retrieve-all").permitAll()
                 .antMatchers(HttpMethod.POST, "/engine-volumes/retrieve-by-id/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/engine-volumes/create").permitAll()
-                .antMatchers(HttpMethod.POST, "/engine-volumes/update").permitAll()
-                .antMatchers(HttpMethod.POST, "/engine-volumes/delete/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/engine-volumes/create").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.POST, "/engine-volumes/update").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.POST, "/engine-volumes/delete/**").hasAuthority("ADMINISTRATOR")
+
+                //users
+                .antMatchers(HttpMethod.POST, "/users/retrieve-all").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.POST, "/users/retrieve-by-id/**").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.POST, "/users/create").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.POST, "/users/update").hasAuthority("ADMINISTRATOR")
+                .antMatchers(HttpMethod.POST, "/users/delete/**").hasAuthority("ADMINISTRATOR")
 
                 //PRIVATE ENDPOINTS
                 .anyRequest()
