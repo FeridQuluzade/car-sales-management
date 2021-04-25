@@ -25,4 +25,4 @@ build and push docker image:
     - develop
     - master
   tags:
-    - shell
+    - back
