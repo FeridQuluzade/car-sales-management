@@ -2,18 +2,18 @@ variables:
   DOCKER_IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID
 
 stages:
-  - build/test
+#  - build/test
   - build/push docker image
 
 
-build project:
-  stage: build/test
-  image: maven:latest
-  script:
-    - mvn package
-  artifacts:
-    paths:
-      - target
+#build project:
+#  stage: build/test
+#  image: maven:latest
+#  script:
+#    - mvn package
+#  artifacts:
+#    paths:
+#      - target
 
 build and push docker image:
   stage: build/push docker image
@@ -26,3 +26,4 @@ build and push docker image:
     - master
   tags:
     - back
+    - shell
