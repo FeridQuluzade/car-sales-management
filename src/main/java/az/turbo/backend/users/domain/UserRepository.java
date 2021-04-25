@@ -28,7 +28,8 @@ public class UserRepository {
             List<User> users = new ArrayList<>();
 
             Connection connection = postgreDbService.getConnection();
-            String query = "select id, first_name, last_name, gender, email, password from users " +
+          //  id, first_name, last_name, gender, email, password
+            String query = "select * from users " +
                     "where is_deleted = bit'0'";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -40,7 +41,7 @@ public class UserRepository {
                 int gender = resultSet.getInt("gender");
                 String email = resultSet.getString("email");
                 String hashPassword = resultSet.getString("password");
-                Boolean isEmailConfirmed = resultSet.getBoolean("is_email_confirmed");
+                Boolean isEmailConfirmed = resultSet.getInt("is_email_confirmed")==1;
                 String refreshToken = resultSet.getString("refresh_token");
                 Role role = Role.valueOf(resultSet.getString("role"));
 
@@ -77,13 +78,13 @@ public class UserRepository {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
                 int gender = resultSet.getInt("gender");
                 String email = resultSet.getString("email");
                 String hashPassword = resultSet.getString("password");
-                Boolean isEmailConfirmed = resultSet.getBoolean("is_email_confirmed");
+                Boolean isEmailConfirmed = resultSet.getInt("is_email_confirmed")==1;
                 String refreshToken = resultSet.getString("refresh_token");
                 Role role = Role.valueOf(resultSet.getString("role"));
 
@@ -123,13 +124,13 @@ public class UserRepository {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 long id = resultSet.getLong("id");
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
                 int gender = resultSet.getInt("gender");
                 String hashPassword = resultSet.getString("password");
-                Boolean isEmailConfirmed = resultSet.getBoolean("is_email_confirmed");
+                Boolean isEmailConfirmed = resultSet.getInt("is_email_confirmed")==1;
                 String refreshToken = resultSet.getString("refresh_token");
                 Role role = Role.valueOf(resultSet.getString("role"));
 
@@ -160,8 +161,9 @@ public class UserRepository {
     public long create(User user) {
         try {
             Connection connection = postgreDbService.getConnection();
-            String query = "insert into users(first_name, last_name, gender, email, password, created_by, created_date)" +
-                    "values(?,?,?,?,?,?,?) returning id";
+            String query = "insert into users(first_name, last_name, gender, email, password, created_by, created_date, " +
+                    " role, is_email_confirmed, refresh_token)" +
+                    "values(?,?,?,?,?,?,?,?,cast(? as bit),?) returning id";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -172,6 +174,9 @@ public class UserRepository {
             preparedStatement.setString(5, user.getPassword());
             preparedStatement.setLong(6, user.getCreatedBy());
             preparedStatement.setTimestamp(7, Timestamp.valueOf(user.getCreatedDate()));
+            preparedStatement.setString(8, user.getRole().toString());
+            preparedStatement.setString(9, user.isEmailConfirmed() ? "1" : "0");
+            preparedStatement.setString(10, user.getRefreshToken());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
