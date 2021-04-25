@@ -1,5 +1,10 @@
+variables:
+  DOCKER_IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID
+
 stages:
   - build/test
+  - build/push docker image
+
 
 build project:
   stage: build/test
@@ -9,3 +14,15 @@ build project:
   artifacts:
     paths:
       - target
+
+build and push docker image:
+  stage: build/push docker image
+  script:
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD registry.gitlab.com
+    - docker build --build-arg SPRING_ACTIVE_PROFILE=$SPRING_ACTIVE_PROFILE -t $DOCKER_IMAGE_TAG .
+    - docker push $DOCKER_IMAGE_TAG
+  only:
+    - develop
+    - master
+  tags:
+    - shell
