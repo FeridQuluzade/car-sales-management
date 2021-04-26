@@ -3,6 +3,7 @@ package az.turbo.backend.currencies;
 import az.turbo.backend.currencies.application.CurrencyService;
 import az.turbo.backend.currencies.application.dto.CurrencyCreateDto;
 import az.turbo.backend.currencies.application.dto.CurrencyDto;
+import az.turbo.backend.currencies.application.dto.CurrencyUpdateDto;
 import az.turbo.backend.shared.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,4 +34,12 @@ public class CurrencyController {
         currencyCreateDto.setCreatedDate(LocalDateTime.now());
         return currencyService.create(currencyCreateDto);
     }
+
+    @PutMapping(value = "/update")
+    public void update(@Valid @RequestBody CurrencyUpdateDto currencyUpdateDto){
+        currencyUpdateDto.setUpdatedBy(UserContextHolder.getUserId());
+        currencyUpdateDto.setUpdatedDate(LocalDateTime.now());
+        currencyService.update(currencyUpdateDto);
+    }
+
 }

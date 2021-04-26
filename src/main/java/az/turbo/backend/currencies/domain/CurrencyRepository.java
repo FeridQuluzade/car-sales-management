@@ -61,4 +61,29 @@ public class CurrencyRepository {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public void update(Currency currency) {
+        try {
+            Connection connection = postgreDbService.getConnection();
+
+            String query = "Update currencies " +
+                    "SET name=?,updated_by=?,updated_date=?" +
+                    "where id=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, currency.getName());
+            preparedStatement.setLong(2, currency.getUpdatedBy());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(currency.getUpdatedDate()));
+            preparedStatement.setLong(4, currency.getId());
+            preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
 }
