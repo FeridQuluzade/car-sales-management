@@ -5,6 +5,7 @@ import az.turbo.backend.colors.application.dto.ColorCreateDto;
 import az.turbo.backend.colors.application.dto.ColorDto;
 
 import az.turbo.backend.colors.application.dto.ColorUpdateDto;
+import az.turbo.backend.shared.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,8 @@ public class ColorController {
 
     @PostMapping(value = "/create")
     public long create(@Valid @RequestBody ColorCreateDto colorCreateDto) {
+        colorCreateDto.setCreatedBy(UserContextHolder.getUserId());
+        colorCreateDto.setCreatedDate(LocalDateTime.now());
         return colorService.create(colorCreateDto);
     }
 
