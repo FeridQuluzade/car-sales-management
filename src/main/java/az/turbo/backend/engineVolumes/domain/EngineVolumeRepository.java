@@ -74,13 +74,13 @@ public class EngineVolumeRepository {
     public long create(EngineVolume engineVolume) {
         try {
             Connection connection = postgreDbService.getConnection();
-            String query = "insert into enginevolumes(name,created_by,created_date)" +
+            String query = "insert into enginevolumes(value,created_by,created_date)" +
                     "values(?,?,?) returning id";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, engineVolume.getValue());
-            preparedStatement.setLong(2, engineVolume.getUpdatedBy());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(engineVolume.getUpdatedDate()));
+            preparedStatement.setLong(2, engineVolume.getCreatedBy());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(engineVolume.getCreatedDate()));
 
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
@@ -101,7 +101,7 @@ public class EngineVolumeRepository {
             Connection connection = postgreDbService.getConnection();
 
             String query = "Update engine-volumes" +
-                    "SET name=?,updated_by=?,updated_date=?" +
+                    "SET value=?,updated_by=?,updated_date=?" +
                     "where id=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, engineVolume.getValue());

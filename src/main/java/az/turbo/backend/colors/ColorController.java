@@ -44,6 +44,8 @@ public class ColorController {
 
     @PutMapping(value = "/update")
     public void update(@Valid @RequestBody ColorUpdateDto colorUpdateDto) {
+        colorUpdateDto.setUpdatedBy(UserContextHolder.getUserId());
+        colorUpdateDto.setUpdatedDate(LocalDateTime.now());
         colorService.update(colorUpdateDto);
     }
 
