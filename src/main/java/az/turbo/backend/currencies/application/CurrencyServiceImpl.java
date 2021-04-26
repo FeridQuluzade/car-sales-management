@@ -3,6 +3,7 @@ package az.turbo.backend.currencies.application;
 import az.turbo.backend.currencies.application.dto.CurrencyCreateDto;
 import az.turbo.backend.currencies.application.dto.CurrencyDto;
 import az.turbo.backend.currencies.application.dto.CurrencyUpdateDto;
+import az.turbo.backend.currencies.application.exception.CurrencyNotFoundException;
 import az.turbo.backend.currencies.domain.CurrencyRepository;
 import az.turbo.backend.currencies.domain.model.Currency;
 import org.modelmapper.ModelMapper;
@@ -32,6 +33,14 @@ public class CurrencyServiceImpl implements CurrencyService {
                 .stream()
                 .map(currency -> modelMapper.map(currency,CurrencyDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CurrencyUpdateDto retrieveById(long id) {
+        Currency currency=currencyRepository
+                .findById(id)
+                .orElseThrow(()-> new CurrencyNotFoundException("Currency not found! by Id"));
+        return modelMapper.map(currency,CurrencyUpdateDto.class);
     }
 
     @Override

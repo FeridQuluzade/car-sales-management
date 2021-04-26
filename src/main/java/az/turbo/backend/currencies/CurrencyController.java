@@ -28,6 +28,12 @@ public class CurrencyController {
         return currencyService.retrieveAll();
     }
 
+    @GetMapping(value = "/retrieve-by-id/{id}")
+    @ResponseBody
+    public CurrencyUpdateDto retrieveById(@PathVariable Long id){
+        return currencyService.retrieveById(id);
+    }
+
     @PostMapping(value = "/create")
     public long create(@Valid @RequestBody CurrencyCreateDto currencyCreateDto) {
         currencyCreateDto.setCreatedBy(UserContextHolder.getUserId());
