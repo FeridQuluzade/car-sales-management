@@ -42,4 +42,9 @@ public class CurrencyController {
         currencyService.update(currencyUpdateDto);
     }
 
+    @DeleteMapping(value = "/delete/{id}")
+    public void delete(@PathVariable Long id){
+        currencyService.deleteById(id,UserContextHolder.getUserId(),LocalDateTime.now());
+    }
+
 }
