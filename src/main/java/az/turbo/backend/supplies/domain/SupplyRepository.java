@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SupplyRepository {
@@ -43,6 +44,31 @@ public class SupplyRepository {
         }
     }
 
+public Optional<Supply> findById(long id){
+        try{
+            Optional<Supply> optionalSupply=Optional.empty();
+
+            Connection connection= postgreDbService.getConnection();
+            String query="Select * from supplies where id=?";
+
+            PreparedStatement preparedStatement=connection.prepareStatement(query);
+            preparedStatement.setLong(1,id);
+            ResultSet resultSet=preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                String name=resultSet.getString("name");
+                Supply supply=new Supply(id,name);
+                optionalSupply=Optional.of(supply);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            return optionalSupply;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+}
 
     public long create(Supply supply) {
 

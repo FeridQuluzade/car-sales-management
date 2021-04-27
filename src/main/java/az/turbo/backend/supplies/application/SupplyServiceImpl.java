@@ -3,6 +3,7 @@ package az.turbo.backend.supplies.application;
 import az.turbo.backend.supplies.application.dto.SupplyCreateDto;
 import az.turbo.backend.supplies.application.dto.SupplyDto;
 import az.turbo.backend.supplies.application.dto.SupplyUpdateDto;
+import az.turbo.backend.supplies.application.exception.SupplyNotFoundException;
 import az.turbo.backend.supplies.domain.SupplyRepository;
 import az.turbo.backend.supplies.domain.model.Supply;
 import org.modelmapper.ModelMapper;
@@ -31,6 +32,15 @@ public class SupplyServiceImpl implements SupplyService {
                 .stream()
                 .map(supply -> modelMapper.map(supply,SupplyDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public SupplyUpdateDto retrieveById(long id) {
+      Supply supply=supplyRepository
+              .findById(id)
+              .orElseThrow(()->new SupplyNotFoundException("Supply not found! by Id"));
+
+      return modelMapper.map(supply,SupplyUpdateDto.class);
     }
 
     @Override

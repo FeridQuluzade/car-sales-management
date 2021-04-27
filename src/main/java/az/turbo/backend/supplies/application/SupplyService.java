@@ -10,6 +10,8 @@ public interface SupplyService {
 
     List<SupplyDto> retrieveAll();
 
+    SupplyUpdateDto retrieveById(long id);
+
     long create(SupplyCreateDto supplyCreateDto);
 
     void update(SupplyUpdateDto supplyUpdateDto);

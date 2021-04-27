@@ -27,6 +27,11 @@ public class SupplyController {
          return supplyService.retrieveAll();
     }
 
+    @GetMapping(value = "/retrieve-by-id/{id}")
+    @ResponseBody
+    public SupplyUpdateDto retrieveById(@PathVariable Long id){
+        return supplyService.retrieveById(id);
+    }
     @PostMapping(value = "create")
     public long create(@Valid @RequestBody SupplyCreateDto supplyCreateDto) {
         supplyCreateDto.setCreatedBy(UserContextHolder.getUserId());
