@@ -1,13 +1,16 @@
 package az.turbo.backend.supplies.application.dto;
 
-public class SupplyDto {
+import az.turbo.backend.shared.audited.AuditedUpdateDto;
+
+public class SupplyUpdateDto extends AuditedUpdateDto {
+
     private long id;
     private String name;
 
-    public SupplyDto() {
+    public SupplyUpdateDto() {
     }
 
-    public SupplyDto(long id, String name) {
+    public SupplyUpdateDto(long id, String name) {
         this.id = id;
         this.name = name;
     }
