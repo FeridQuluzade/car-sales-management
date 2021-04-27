@@ -10,9 +10,11 @@ import java.util.List;
 public interface CurrencyService {
     List<CurrencyDto> retrieveAll();
 
+    CurrencyUpdateDto retrieveById(long id);
+
     long create(CurrencyCreateDto currencyCreateDto);
 
     void update(CurrencyUpdateDto currencyUpdateDto);
 
-    void deleteById(long id,long deleteBy,LocalDateTime deletedDate);
+    void deleteById(long id, long deleteBy, LocalDateTime deletedDate);
 }

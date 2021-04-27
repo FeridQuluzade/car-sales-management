@@ -9,6 +9,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CurrencyRepository {
@@ -37,6 +38,33 @@ public class CurrencyRepository {
             connection.close();
             return currencies;
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public Optional<Currency> findById(long id) {
+        try {
+            Optional<Currency> optionalCurrency = Optional.empty();
+
+            Connection connection = postgreDbService.getConnection();
+            String query = "SELECT * FROM currencies WHERE id=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                Currency currency = new Currency(id, name);
+                optionalCurrency = Optional.of(currency);
+            }
+
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+            return optionalCurrency;
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -86,27 +114,26 @@ public class CurrencyRepository {
         }
     }
 
-       public void DeleteById(long id, long deleteBy, LocalDateTime deletedDate) {
-           try {
-               Connection connection = postgreDbService.getConnection();
+    public void DeleteById(long id, long deleteBy, LocalDateTime deletedDate) {
+        try {
+            Connection connection = postgreDbService.getConnection();
 
-               String query = "UPDATE currencies SET is_deleted= cast(? as bit),deleted_by=?,deleted_date=?" +
-                       "where id=?";
+            String query = "UPDATE currencies SET is_deleted= cast(? as bit),deleted_by=?,deleted_date=?" +
+                    "where id=?";
 
-               PreparedStatement preparedStatement = connection.prepareStatement(query);
-               preparedStatement.setString(1, "1");
-               preparedStatement.setLong(2, deleteBy);
-               preparedStatement.setTimestamp(3,Timestamp.valueOf(deletedDate));
-               preparedStatement.setLong(4,id);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "1");
+            preparedStatement.setLong(2, deleteBy);
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(deletedDate));
+            preparedStatement.setLong(4, id);
 
-               preparedStatement.executeUpdate();
-               preparedStatement.close();
-               connection.close();
-           } catch (SQLException e) {
-               throw new RuntimeException(e.getMessage());
-           }
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
 
-
-       }
+    }
 }
