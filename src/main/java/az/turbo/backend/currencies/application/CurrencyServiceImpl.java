@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,5 +44,10 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void update(CurrencyUpdateDto currencyUpdateDto) {
         Currency currency=modelMapper.map(currencyUpdateDto,Currency.class);
          currencyRepository.update(currency);
+    }
+
+    @Override
+    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate)  {
+        currencyRepository.DeleteById(id,deleteBy,deletedDate);
     }
 }
