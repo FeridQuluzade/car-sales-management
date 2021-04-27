@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,5 +54,10 @@ public class SupplyServiceImpl implements SupplyService {
     public void update(SupplyUpdateDto supplyUpdateDto) {
         Supply supply=modelMapper.map(supplyUpdateDto,Supply.class);
         supplyRepository.update(supply);
+    }
+
+    @Override
+    public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
+        supplyRepository.DeleteById(id,deletedBy,deletedDate);
     }
 }

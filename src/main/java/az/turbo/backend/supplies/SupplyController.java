@@ -45,4 +45,9 @@ public class SupplyController {
         supplyUpdateDto.setUpdatedDate(LocalDateTime.now());
         supplyService.update(supplyUpdateDto);
     }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public void delete(@PathVariable Long id){
+        supplyService.deleteById(id,UserContextHolder.getUserId(),LocalDateTime.now());
+    }
 }
