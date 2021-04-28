@@ -1,15 +1,16 @@
-package az.turbo.backend.currencies.domain.model;
+package az.turbo.backend.currencies.application.dto;
 
-import az.turbo.backend.shared.BaseEntity;
+import az.turbo.backend.shared.audited.AuditedUpdateDto;
 
-public class Currency extends BaseEntity {
+public class CurrencyUpdateDto extends AuditedUpdateDto {
+
     private long id;
     private String name;
 
-    public Currency() {
+    public CurrencyUpdateDto() {
     }
 
-    public Currency(long id, String name) {
+    public CurrencyUpdateDto(long id, String name) {
         this.id = id;
         this.name = name;
     }

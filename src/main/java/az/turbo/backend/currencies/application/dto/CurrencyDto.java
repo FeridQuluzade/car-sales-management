@@ -1,16 +1,18 @@
-package az.turbo.backend.currencies.domain.model;
+package az.turbo.backend.currencies.application.dto;
 
-import az.turbo.backend.shared.BaseEntity;
-
-public class Currency extends BaseEntity {
+public class CurrencyDto {
     private long id;
     private String name;
 
-    public Currency() {
+    public CurrencyDto() {
     }
 
-    public Currency(long id, String name) {
+    public CurrencyDto(long id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -24,9 +26,5 @@ public class Currency extends BaseEntity {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
