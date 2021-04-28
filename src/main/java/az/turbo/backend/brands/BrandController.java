@@ -2,15 +2,14 @@ package az.turbo.backend.brands;
 
 import az.turbo.backend.brands.application.BrandService;
 import az.turbo.backend.brands.application.dto.BrandCreateDto;
+import az.turbo.backend.brands.application.dto.BrandDto;
 import az.turbo.backend.shared.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/brands")
@@ -20,6 +19,12 @@ public class BrandController {
     @Autowired
     public BrandController(BrandService brandService) {
         this.brandService = brandService;
+    }
+
+    @GetMapping(value = "/retrieve-all")
+    @ResponseBody
+    public List<BrandDto> retrieveAll(){
+        return brandService.retrieveAll();
     }
 
     @PostMapping(value = "/create")
