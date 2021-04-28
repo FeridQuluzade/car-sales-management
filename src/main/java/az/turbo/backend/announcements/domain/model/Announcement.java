@@ -8,7 +8,7 @@ import az.turbo.backend.currencies.domain.model.Currency;
 import az.turbo.backend.customers.domain.model.Customer;
 import az.turbo.backend.engineVolumes.domain.model.EngineVolume;
 import az.turbo.backend.shared.BaseEntity;
-import az.turbo.backend.supplies.domain.model.Supplies;
+import az.turbo.backend.supplies.domain.model.Supply;
 
 import java.util.Set;
 
@@ -21,7 +21,7 @@ public class Announcement extends BaseEntity {
     private EngineVolume engineVolume;
     private City city;
     private Customer customer;
-    private Set<Supplies> supplies;
+    private Set<Supply> supplies;
 
     private FuelType fuelType;
     private TransmissionType transmissionType;
