@@ -1,11 +1,16 @@
 package az.turbo.backend.supplies.application;
 
 import az.turbo.backend.supplies.application.dto.SupplyCreateDto;
+import az.turbo.backend.supplies.application.dto.SupplyDto;
+import az.turbo.backend.supplies.application.dto.SupplyUpdateDto;
 import az.turbo.backend.supplies.domain.SupplyRepository;
 import az.turbo.backend.supplies.domain.model.Supply;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SupplyServiceImpl implements SupplyService {
@@ -20,8 +25,23 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
+    public List<SupplyDto> retrieveAll() {
+        return supplyRepository
+                .findAll()
+                .stream()
+                .map(supply -> modelMapper.map(supply,SupplyDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public long create(SupplyCreateDto supplyCreateDto) {
         Supply supply = modelMapper.map(supplyCreateDto, Supply.class);
         return supplyRepository.create(supply);
+    }
+
+    @Override
+    public void update(SupplyUpdateDto supplyUpdateDto) {
+        Supply supply=modelMapper.map(supplyUpdateDto,Supply.class);
+        supplyRepository.update(supply);
     }
 }
