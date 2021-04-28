@@ -39,7 +39,7 @@ public class SupplyServiceImpl implements SupplyService {
     public SupplyUpdateDto retrieveById(long id) {
       Supply supply=supplyRepository
               .findById(id)
-              .orElseThrow(()->new SupplyNotFoundException("Supply not found! by Id"));
+              .orElseThrow(()->new SupplyNotFoundException("Supply not found!"));
 
       return modelMapper.map(supply,SupplyUpdateDto.class);
     }
@@ -58,6 +58,6 @@ public class SupplyServiceImpl implements SupplyService {
 
     @Override
     public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
-        supplyRepository.DeleteById(id,deletedBy,deletedDate);
+        supplyRepository.deleteById(id,deletedBy,deletedDate);
     }
 }
