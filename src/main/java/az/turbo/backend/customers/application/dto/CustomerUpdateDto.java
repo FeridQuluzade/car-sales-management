@@ -1,6 +1,8 @@
 package az.turbo.backend.customers.application.dto;
 
-public class CustomerUpdateDto {
+import az.turbo.backend.shared.audited.AuditedUpdateDto;
+
+public class CustomerUpdateDto extends AuditedUpdateDto {
     private long id;
     private String fullName;
     private String phone;

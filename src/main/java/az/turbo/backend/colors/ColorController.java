@@ -51,6 +51,6 @@ public class ColorController {
 
     @DeleteMapping(value = "/deleted/{id}")
     public void delete(@PathVariable Long id) {
-        colorService.deleteById(id, 1, LocalDateTime.now());
+        colorService.deleteById(id, UserContextHolder.getUserId(), LocalDateTime.now());
     }
 }

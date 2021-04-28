@@ -12,7 +12,7 @@
 
     <groupId>az.turbo</groupId>
     <artifactId>turboaz-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>turboaz-backend</name>
     <description>Turbo.az REST API</description>
 
