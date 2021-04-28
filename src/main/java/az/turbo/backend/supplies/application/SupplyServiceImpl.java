@@ -3,12 +3,14 @@ package az.turbo.backend.supplies.application;
 import az.turbo.backend.supplies.application.dto.SupplyCreateDto;
 import az.turbo.backend.supplies.application.dto.SupplyDto;
 import az.turbo.backend.supplies.application.dto.SupplyUpdateDto;
+import az.turbo.backend.supplies.application.exception.SupplyNotFoundException;
 import az.turbo.backend.supplies.domain.SupplyRepository;
 import az.turbo.backend.supplies.domain.model.Supply;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,15 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
+    public SupplyUpdateDto retrieveById(long id) {
+      Supply supply=supplyRepository
+              .findById(id)
+              .orElseThrow(()->new SupplyNotFoundException("Supply not found!"));
+
+      return modelMapper.map(supply,SupplyUpdateDto.class);
+    }
+
+    @Override
     public long create(SupplyCreateDto supplyCreateDto) {
         Supply supply = modelMapper.map(supplyCreateDto, Supply.class);
         return supplyRepository.create(supply);
@@ -43,5 +54,10 @@ public class SupplyServiceImpl implements SupplyService {
     public void update(SupplyUpdateDto supplyUpdateDto) {
         Supply supply=modelMapper.map(supplyUpdateDto,Supply.class);
         supplyRepository.update(supply);
+    }
+
+    @Override
+    public void deleteById(long id, long deletedBy, LocalDateTime deletedDate) {
+        supplyRepository.deleteById(id,deletedBy,deletedDate);
     }
 }

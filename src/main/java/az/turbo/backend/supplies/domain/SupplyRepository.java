@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SupplyRepository {
@@ -18,31 +20,56 @@ public class SupplyRepository {
         this.postgreDbService = postgreDbService;
     }
 
-    public List<Supply> findAll(){
+    public List<Supply> findAll() {
 
-        try{
-            List<Supply> supplies=new ArrayList<>();
+        try {
+            List<Supply> supplies = new ArrayList<>();
 
-            Connection connection= postgreDbService.getConnection();
+            Connection connection = postgreDbService.getConnection();
 
-            String query="select id,name from supplies";
-            PreparedStatement preparedStatement= connection.prepareStatement(query);
-            ResultSet resultSet= preparedStatement.executeQuery();
-            while (resultSet.next()){
-                long id= resultSet.getLong("id");
-                String name= resultSet.getString("name");
-                supplies.add(new Supply(id,name));
+            String query = "select id,name from supplies";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+                String name = resultSet.getString("name");
+                supplies.add(new Supply(id, name));
             }
 
             resultSet.close();
             preparedStatement.close();
             connection.close();
             return supplies;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
+    public Optional<Supply> findById(long id) {
+        try {
+            Optional<Supply> optionalSupply = Optional.empty();
+
+            Connection connection = postgreDbService.getConnection();
+            String query = "Select * from supplies where id=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                Supply supply = new Supply(id, name);
+                optionalSupply = Optional.of(supply);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            return optionalSupply;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     public long create(Supply supply) {
 
@@ -68,22 +95,44 @@ public class SupplyRepository {
         }
     }
 
-    public void update(Supply supply){
-        try{
-            Connection connection= postgreDbService.getConnection();
+    public void update(Supply supply) {
+        try {
+            Connection connection = postgreDbService.getConnection();
 
-            String query="UPDATE supplies set name=?,updated_by=?,updated_date=?"+"where  id=?";
-            PreparedStatement preparedStatement=connection.prepareStatement(query);
-            preparedStatement.setString(1,supply.getName());
-            preparedStatement.setLong(2,supply.getUpdatedBy());
-            preparedStatement.setTimestamp(3,Timestamp.valueOf(supply.getUpdatedDate()));
-            preparedStatement.setLong(4,supply.getId());
+            String query = "UPDATE supplies set name=?,updated_by=?,updated_date=?" + "where  id=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, supply.getName());
+            preparedStatement.setLong(2, supply.getUpdatedBy());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(supply.getUpdatedDate()));
+            preparedStatement.setLong(4, supply.getId());
             preparedStatement.executeUpdate();
 
             preparedStatement.close();
             connection.close();
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
+    public void deleteById(long id, long deleteBy, LocalDateTime deletedDate) {
+        try {
+            Connection connection = postgreDbService.getConnection();
+
+            String query = "UPDATE supplies SET is_deleted= cast(? as bit),deleted_by=?,deleted_date=? " +
+                    "where  id=?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "1");
+            preparedStatement.setLong(2, deleteBy);
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(deletedDate));
+            preparedStatement.setLong(4, id);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
     }

@@ -27,6 +27,11 @@ public class SupplyController {
          return supplyService.retrieveAll();
     }
 
+    @GetMapping(value = "/retrieve-by-id/{id}")
+    @ResponseBody
+    public SupplyUpdateDto retrieveById(@PathVariable Long id){
+        return supplyService.retrieveById(id);
+    }
     @PostMapping(value = "create")
     public long create(@Valid @RequestBody SupplyCreateDto supplyCreateDto) {
         supplyCreateDto.setCreatedBy(UserContextHolder.getUserId());
@@ -39,5 +44,10 @@ public class SupplyController {
         supplyUpdateDto.setUpdatedBy(UserContextHolder.getUserId());
         supplyUpdateDto.setUpdatedDate(LocalDateTime.now());
         supplyService.update(supplyUpdateDto);
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public void delete(@PathVariable Long id){
+        supplyService.deleteById(id,UserContextHolder.getUserId(),LocalDateTime.now());
     }
 }
